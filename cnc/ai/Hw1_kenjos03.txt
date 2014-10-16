@@ -1,0 +1,45 @@
+1.
+i)
+Rules:
+
+while(true) 
+	if(room == dirty)
+		suck() ;
+	else if(hasMoved != true)
+		if(canMove(right))
+			move(right) ;
+		else
+			move(left) ;
+	else
+		break ;
+
+t1 = +1 (for one clean room)
+t2 = +1 - 0.5 (for one clean room and moving)
+t3 = +2 (for 2 clean rooms)
+t4 = +2 (for 2 clean rooms)
+t5 = +2 (for 2 clean rooms)
+total = 7.5 points
+
+2.
+
+Connectionism is a movement started in the mid 1980s that used
+back-propagation algorithms to solve learning problems. This 
+was seen as a direct competitor with the prevalent symbolic
+models promoted by Newell and Simon.
+
+3.
+An intelligent agent is an agent that receives percepts from an
+environment and performs actions based on those percepts. 
+
+4.
+
+1.15
+The Robocup challeneged was inspired by developments in AI 
+including DeepBlue and NASA's pathfinder mission. Researchers
+brought up the idea of building a robot soccer team the play
+against real humans with the goal of beating a real team. This
+inspired people to invest into multi-agent research and developing
+agents that work with eachother. 
+
+2.1
+
