@@ -1,0 +1,46 @@
+
+
+
+2.1
+
+If performance is only measured for a certain number of timesteps
+n, then once the the agent reaches time n, then there isn't a 
+goal for the agent to fulfill.
+
+
+3.14
+
+a)
+True, DFS always expands to the deepest node first and works back
+from there. An A* will calculate a modest guess which will never
+actually reach the the bottom of the search space, so the DFS will
+always be at least as big as A*.
+
+b)
+True, heuristic functions have one constraint and that is if n
+is a goal node, then h(n) = 0.
+
+c)
+Maybe true? A* seems like it requires too many resources to be 
+applied to real-world, complex problem.
+
+d)
+True, if no cost steps are allowed, there is still the current
+node so it is still complete.
+
+e)
+True, Manhattan distance deals with horizontal and vertical 
+measuring, which mimics how the rook moves.
+
+
+3.15
+
+							1
+						2		3
+					4	  6	  7		5	
+			6		 7   
+
+
+
+
+3.21
