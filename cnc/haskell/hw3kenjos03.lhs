@@ -1,8 +1,8 @@
 >	import Data.Char
 
-
 H99P
 1.
+
 
 >	myLast :: (Eq a) => [a] -> a
 >	myLast (x:xs)
@@ -72,14 +72,18 @@ H99P
 >	cnt [] = 0
 >	cnt (x:xs) = 1 + cnt xs
 
-	encode :: (Eq a) => [a] -> [(Int,b)]
+	encode :: (Eq a) => [a] -> [(Int,a)]
 
 	encode [] = []
 	encode [x] = [(1,x)]
-	encode l@(x:xs) = ((cnt x', (head x')):encode xs')
+	encode l@(x:xs) = (cnt x', (head x')):encode xs'
 			where
 				l'@(x':xs') = pack l
 
+>	encode xs = (enc . pack) xs
+>		where enc = foldr (\x acc -> (length x, head x) : acc) []
+
+2 CRFP
 5.7
 
 >	data Shape = 	Circle Float |
@@ -162,7 +166,50 @@ numbers tend to overshoot the limits.
 >	onSeparateLines [] = []
 >	onSeparateLines l@(x:xs) = x ++ "\n" ++ onSeparateLines xs
 
-5.28
+3 5.28
 
 
+>	type Person = String
+>	type Book 	= String
 
+>	type Database = [ (Person, Book) ]
+
+>	exampleBase :: Database
+>	exampleBase = 
+>			[ ("Alice", "Tintin"), ("Anna", "Little Women"),
+>			("Alice", "Asterix"), ("Rory", "Tintin") ]
+
+>	books :: Database -> Person -> [Book]
+>	books db name = [n | (m,n) <- db, m == name ] 
+
+>	borrowers :: Database -> Book -> [Person]
+>	borrowers db book = [m | (m,n) <- db, n == book ]
+
+>	borrowed :: Database -> Book -> Bool
+>	borrowed [] book = False
+>	borrowed ((m,n):xs) book
+>		| book == n		= True
+>		| otherwise		= False || borrowed xs book
+
+>	numBorrowed :: Database -> Person -> Int
+>	numBorrowed [] book = 0
+>	numBorrowed ((m,n):xs) name
+>		| name == m		= 1 + numBorrowed xs name
+>		| otherwise		= 0 + numBorrowed xs name
+
+
+4
+
+>	exSet = [1,2,3,4,5,6,7,8,9,10]
+
+	groupByN :: Int -> [a] -> [[a]]
+
+>	groupByN [] n = []
+>	groupByN l n = sublist:groupByN l' n
+>		where
+>			sublist = split l n
+>			l' = drop n l
+
+>	split _ 0 = []
+>	split [] _ = []
+>	split (x:xs) n = x:split xs (n-1)

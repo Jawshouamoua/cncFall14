@@ -1,0 +1,50 @@
+1.
+(Bool, "bool"), (Char, "char"), (Else, "else"), (False, "false"),
+(Float, "float"), (If, "if"), (Int,"int"),(Main,"main"), (True,"true")
+(While,"while"),(Eof,"eof"),(LeftBrace,"{"), (RightBrace,"}")
+(LeftBracket,"["), (RightBracket,"]"), (Semicolon,";"), (Comma,","),
+(LeftParen,"("), (RightParen,")"),
+(Assign,"="), (Equals,"=="), (Less,">"),(LessEquals,">="),
+(Greater,"<"), (GreaterEqual,"<="), (Not,"!"), (NotEqual,"!="),
+(Plus,"+"), (Minus,"-"), (Multiply,"*"), (Divide,"/"), (And,"&&"),
+(Or,"||"), (Identifier, name), (IntLiteral,name), (FloatLiteral,name)
+(CharLiteral,name)
+
+2.
+Tokens used for factorial.cpp:
+(Int,"int"), (Main,"main"), (LeftParen,"("),(RightParen,")"),
+(LeftBrace,"{"), (IntLiteral,name),(While,"while"),(Less,"<"),
+(Plus,"+"), (Assign,"="), (Multiply,"*"), (Semicolon,";"), 
+(RightBrace,"}") 
+
+3.
+case '-': ch = nextChar() ;
+	return Token.minusTok ;
+
+case '*': ch = nextChar() ;
+	return Token.multiplyTok ;
+
+case '(': ch = nextChar() ; return Token.leftParenTok ;
+
+case ')': ch = nextChar() ; return Token.rightParenTok ;
+
+case '{': ch = nextChar() ; return Token.leftBraceTok ;
+
+case '}': ch = nextChar() ; return Token.rightBraceTok ;
+
+case ';': ch = nextChar() ;
+	return Token.semicolonTok ;
+
+case ',': ch = nextChar() ;
+	return Token.commaTok ;
+
+case '<': ch = nextChar() ;
+	return chkOpt('<', Token.ltTok, Token.lteqTok);
+
+case '>':
+	return chkOpt('>', Token.gtTok, Token.gteqTok) ;
+
+case '!':
+	return chkOpt('!', Token.notTok, Token.noteqTok) ;
+
+

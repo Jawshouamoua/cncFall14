@@ -53,11 +53,11 @@ public class Board {
 		int n = grid.length ;
 		int j = col ;
 		
-		//grid[row][col] = true ;
-	//	count++ ;
+//		grid[row][col] = true ;
+//		count++ ;
 
 		//current position of queen
-		for(int i=row; i < n; i++) {
+		for(int i=0; i < n; i++) {
 
 			System.out.println(i) ;
 
@@ -79,14 +79,20 @@ public class Board {
 				else if(i>grid.length)
 					continue ;
 
+				grid[row][col] = true ;
+				count++ ;
+
 				if(tourFrom(i,j+1)) 
 					return true ;
 
 			//}
-		}
-		print() ;
+		
+		
 		grid[row][col] = false ;
+		print() ;
 		count-- ;
+
+		}
 
 		return false ;
 
@@ -115,8 +121,7 @@ public class Board {
 		
 		int n = Integer.parseInt(args[0]) ;
 		Board b1 = new Board(n,n) ;
-		for(int i=0; i<n; i++)
-		b1.tourFrom(i,0) ;
+		b1.tourFrom(0,0) ;
 
 		
 	}
