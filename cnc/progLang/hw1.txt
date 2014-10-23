@@ -1,1 +1,74 @@
+HW 1 Program Language and Design
 
+
+2.1
+Left-most derivation of 4520
+
+Integer	=> Integer Digit
+		=> Integer Integer Digit
+		=> Integer Integer Integer Digit
+		=> Integer Integer Integer Integer
+		=> 4 Integer Integer Integer
+		=> 4 5 Integer Integer
+		=> 4 5 2 Integer
+		=> 4 5 2 0
+
+An arbitrary number with d digits will take 2*n steps 
+
+2.2
+
+Right-most derivation of 4520
+
+Integer	=> Integer Digit
+		=> Integer 0
+		=> Integer Digit 0
+		=> Integer 2 0
+		=> Integer Digit 2 0
+		=> Integer 5 2 0
+		=> Digit 5 2 0
+		=> 4 5 2 0
+
+2.3
+Left-most derivation of a2i
+
+Identifier	=> Letter Digit Letter
+			=> a Digit Letter
+			=> a 2 Letter
+			=> a 2 i
+
+2.4
+Right-most derivation of a2i
+
+Identifier	=> Letter Digit Letter
+			=> Letter Digit i
+			=> Letter 2 i 
+			=> a 2 i 
+
+2.6
+a)
+						Expr*Term
+				Expr+Term		Term
+			Term		|		   |
+			   |
+			   5        4          3
+
+b)						Expr+Term
+				Expr*Term		Term
+			Term		|		   |
+			   |		
+			   5        4          3
+
+2.7
+
+a)						Term*Expr
+					Term		Expr+Term
+					|		Term		|
+						   	|
+					5      	4			3
+
+b)
+						Term+Expr
+					Term		Expr*Term
+					|		Term		|
+							|		
+					4		4			3

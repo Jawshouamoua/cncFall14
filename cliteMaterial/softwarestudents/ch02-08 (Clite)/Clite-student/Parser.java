@@ -42,12 +42,9 @@ public class Parser {
         for (int i=0; i<header.length; i++)   // bypass "int main ( )"
             match(header[i]);
         match(TokenType.LeftBrace);
-		
-		Declarations decs = declarations() ;
-		Block b = programStatements() ;
-
+        // student exercise
         match(TokenType.RightBrace);
-        return new Program(decs, b);  // student exercise
+        return null;  // student exercise
     }
   
     private Declarations declarations () {
@@ -80,11 +77,6 @@ public class Parser {
         // student exercise
         return b;
     }
-
-	private Block programStatements() {
-		return null ;
-
-	}
   
     private Assignment assignment () {
         // Assignment --> Identifier = Expression ;
