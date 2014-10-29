@@ -1,6 +1,10 @@
 H99P
 
-11.
+
+11
+
+
+>	import Data.List
 
 >	pack :: (Eq a) => [a] -> [[a]]
 >	pack [] = []
@@ -42,3 +46,63 @@ H99P
 >	dupli (x:xs) = x:x:dupli xs 
 
 >	repli xs n = concatMap (replicate n) xs
+
+
+CRFP
+7.8
+
+>	elemNum :: Integer -> [Integer] -> Integer
+>	elemNum _ [] = 0
+>	elemNum n (x:xs) 
+>		| n == x		= 1 + elemNum n xs
+>		| otherwise		= 0 + elemNum n xs 
+
+>	elemNum' :: Integer -> [Integer] -> Integer
+>	elemNum' x xs = foldl (\acc y -> if x == y then 1 + acc else acc) 0 xs 
+	
+
+7.9
+
+>	unique :: [Integer] -> [Integer]
+>	unique xs = [x | x <- xs, elemNum' x xs == 1 ]	
+
+
+10.9
+
+	iter :: Integer -> (Integer -> Integer) -> Integer -> Integer
+
+>	iter 0 _ x = x
+>	iter n f x = f $ iter (n-1) f x
+
+>	iter' n f x = unfoldr (\x -> Just (x, f x))    
+
+11.17
+
+>	addThree (x,y,z) = x+y+z
+
+>	curry' :: ((a,b) -> c) -> (a -> b -> c) 
+>	curry' f x y = f (x,y)
+
+>	uncurry' :: (a -> b -> c) -> ((a,b) -> c) 
+>	uncurry' f (x,y) = f x y 
+
+>	curry3 :: ((a,b,c) -> d) -> (a -> b -> c -> d)
+>	curry3 f x y z = f (x,y,z)
+
+>	curry3' f x y z = curry' (curry' f x y) z   
+
+>	uncurry3 :: (a -> b -> c -> d) -> ((a,b,c) -> d) 
+>	uncurry3 f (x,y,z) = f x y z
+
+11.18
+
+	curryList :: ([a] -> d) -> (a -> [a] -> d) 
+
+>	curryList f = \a -> \as -> f(a:as) 
+
+
+	uncurryList :: (a -> [a] -> d) -> ([a] -> d) 
+
+
+
+
