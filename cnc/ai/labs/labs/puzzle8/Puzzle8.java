@@ -13,7 +13,10 @@ public class Puzzle8 {
 
 	Puzzle8() {
 		
-		board = new int[3][3] ;
+		board = { {1,2,3}, {8,0,5}, {7,6,4} } ;
+
+		
+/*
 		List<Integer> seed = new ArrayList<Integer>() ;
 		for(int i = 0; i < 9; i++) 
 			seed.add(i) ;
@@ -27,10 +30,11 @@ public class Puzzle8 {
 					zCol = j;
 				}
 
-				board[i][j] = seed.get(count) ; count++ ; 
+				board[i][j] = seed.get(count) ; 
+				count++ ; 
 			}
 
-		}
+		} */
 
 	}
 		
@@ -63,7 +67,7 @@ public class Puzzle8 {
 				for(int k=0;k<3;k++) {
 					for(int l=0;l<3;l++) {
 						
-						if(target[i][j] == board[k][l]) {
+						if(target[i][j] == b[k][l]) {
 							row = k; 
 							col = l;
 						}

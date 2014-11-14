@@ -38,7 +38,7 @@ public class Parser {
     public Program program() {
         // Program --> void main ( ) '{' Declarations Statements '}'
         TokenType[ ] header = {TokenType.Int, TokenType.Main,
-                          TokenType.LeftParen, TokenType.RightParen};
+                         TokenType.LeftParen, TokenType.RightParen};
         for (int i=0; i<header.length; i++)   // bypass "int main ( )"
             match(header[i]);
         match(TokenType.LeftBrace);
@@ -46,17 +46,42 @@ public class Parser {
 		Declarations decs = declarations() ;
 		Block b = programStatements() ;
 
+		System.out.println(token) ;
+
         match(TokenType.RightBrace);
         return new Program(decs, b);  // student exercise
     }
   
     private Declarations declarations () {
         // Declarations --> { Declaration }
-        return null;  // student exercise
+		Declarations ds = new Declarations();
+
+		while(isType()) {
+			declaration(ds) ;
+		}
+
+        return ds;  // student exercise
     }
   
     private void declaration (Declarations ds) {
         // Declaration  --> Type Identifier { , Identifier } ;
+        Variable v ;
+		Declaration d ;
+		Type t = type() ;
+		v = new Variable(match(TokenType.Identifier)) ;
+		d = new Declaration(v,t) ;
+		ds.add(d) ;
+
+			while (isComma()) {
+				token = lexer.next() ;
+				v = new Variable(match(TokenType.Identifier)) ;
+				d = new Declaration(v,t) ;
+				ds.add(d) ;
+			}
+
+		match(TokenType.Semicolon) ;
+		}
+
 
         // student exercise
     }
@@ -89,7 +114,11 @@ public class Parser {
   
     private Assignment assignment () {
         // Assignment --> Identifier = Expression ;
-        return null;  // student exercise
+        Variable target = new Variable(match(TokenType.Identifier)) ;
+		match(TokenType.Assign) ;
+		Expression source = expression() ;
+		match(TokenType.Semicolon) ;
+        return new Assignment(target,source) ;  // student exercise
     }
   
     private Conditional ifStatement () {
@@ -104,22 +133,23 @@ public class Parser {
 
     private Expression expression () {
         // Expression --> Conjunction { || Conjunction }
-        return null;  // student exercise
+
+        return(conjunction()) ;  // student exercise
     }
   
     private Expression conjunction () {
         // Conjunction --> Equality { && Equality }
-        return null;  // student exercise
+        return (equality());  // student exercise
     }
   
     private Expression equality () {
         // Equality --> Relation [ EquOp Relation ]
-        return null;  // student exercise
+        return (relation());  // student exercise
     }
 
     private Expression relation (){
         // Relation --> Addition [RelOp Addition] 
-        return null;  // student exercise
+        return (addition());  // student exercise
     }
   
     private Expression addition () {
@@ -177,9 +207,22 @@ public class Parser {
     }
 
     private Value literal( ) {
-        return null;  // student exercise
+
+		match(TokenType.IntLiteral);
+		int myVal = Integer.parseInt(token.value()) ;
+	
+        return new IntValue(myVal) ;  // student exercise
     }
-  
+/* 
+    private String match (TokenType t) {
+        String value = token.value();
+        if (token.type().equals(t))
+            token = lexer.next();
+        else
+            error(t);
+        return value;
+    }
+*/
 
     private boolean isAddOp( ) {
         return token.type().equals(TokenType.Plus) ||

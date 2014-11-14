@@ -103,6 +103,16 @@ CRFP
 
 	uncurryList :: (a -> [a] -> d) -> ([a] -> d) 
 
+6.
+
+>	composeList :: [b -> b] -> a -> b
+>	composeList (x:xs) = x . composeList xs
+
+>	composeList' xs = foldl (.) xs
+
+>	groupByN n = takeWhile (not . null) . map fst . drop 1 . iterate (splitAt n . snd) . (\a -> ([],a))
+
+	group : Eq a => [a] -> [[a]]
 
 
 

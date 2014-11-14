@@ -213,3 +213,10 @@ numbers tend to overshoot the limits.
 >	split _ 0 = []
 >	split [] _ = []
 >	split (x:xs) n = x:split xs (n-1)
+
+
+	group :: Eq a => [a] -> [[a]]
+
+>	group (x:y:xs)
+>		| x==y		= [[]] ++ [x++y] ++ group (y:xs)
+>		| otherwise	= [[]] ++ [x] ++ group (y:xs)
