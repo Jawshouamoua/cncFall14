@@ -13,8 +13,12 @@ class Program {
         body = b;
     }
 
-	public void display() {
+	public void display(String s) {
 		System.out.println("Display abstract syntax") ;
+
+		s = s + "\t" ;
+		decpart.display(s) ;
+		body.display(s) ;
 
 	}
 
@@ -23,6 +27,11 @@ class Program {
 class Declarations extends ArrayList<Declaration> {
     // Declarations = Declaration*
     // (a list of declarations d1, d2, ..., dn)
+    
+	public void display(String s) {
+		System.out.println(s + "display declarations object") ;
+	}
+
 
 }
 
@@ -34,6 +43,13 @@ class Declaration {
     Declaration (Variable var, Type type) {
         v = var; t = type;
     } // declaration */
+
+	public void display(String s) {
+		System.out.println(s + "display Declaration object") ;
+		s = s + "\t" ;
+		t.display(s) ;
+		v.display(s) ;
+	}
 
 }
 
@@ -50,20 +66,37 @@ class Type {
     private Type (String t) { id = t; }
 
     public String toString ( ) { return id; }
+	
+	public void display(String s) {
+		System.out.println(s + "display type object") ;
+
+	}
 }
 
 abstract class Statement {
     // Statement = Skip | Block | Assignment | Conditional | Loop
+    //
+    public void display(String s) {
+		System.out.println(s + "display Statement") ;
+	}
 
 }
 
 class Skip extends Statement {
+
 }
 
 class Block extends Statement {
     // Block = Statement*
     //         (a Vector of members)
     public ArrayList<Statement> members = new ArrayList<Statement>();
+
+	public void display(String s) {
+		System.out.println(s + "display Block") ;
+		s = s + "\t" ;
+		for(Statement ss : members)
+			ss.display(s) ;
+	}
 
 }
 
@@ -76,6 +109,13 @@ class Assignment extends Statement {
         target = t;
         source = e;
     }
+
+	public void display(String s) {
+		System.out.println(s + "display Assignment") ;
+		s = s + "\t" ;
+		target.display(s) ;
+		source.display(s) ;
+	}
 
 }
 
@@ -92,6 +132,13 @@ class Conditional extends Statement {
     Conditional (Expression t, Statement tp, Statement ep) {
         test = t; thenbranch = tp; elsebranch = ep;
     }
+
+	public void display(String s) {
+		System.out.println(s + "display Conditional object") ;
+		test.display(s) ;
+		thenbranch.display(s) ;
+		elsebranch.display(s) ;
+	}
     
 }
 
@@ -103,11 +150,22 @@ class Loop extends Statement {
     Loop (Expression t, Statement b) {
         test = t; body = b;
     }
+
+	public void display(String s) {
+		System.out.println(s + "display loop object") ;
+		s = s + "\t" ;
+		test.display(s) ;
+		body.display(s) ;
+	}
     
 }
 
 abstract class Expression {
     // Expression = Variable | Value | Binary | Unary
+    //
+    public void display(String s) {
+		System.out.println(s + "display Expression") ;
+	}
 
 }
 
@@ -125,6 +183,11 @@ class Variable extends Expression {
     }
     
     public int hashCode ( ) { return id.hashCode( ); }
+
+	public void display(String s) {
+		System.out.println(s + "display variable object") ;
+
+	}
 
 }
 
@@ -165,6 +228,10 @@ abstract class Value extends Expression {
         if (type == Type.FLOAT) return new FloatValue( );
         throw new IllegalArgumentException("Illegal type in mkValue");
     }
+
+	public void display(String s) {
+		System.out.println(s + "display Value") ;
+	}
 }
 
 class IntValue extends Value {
@@ -390,6 +457,7 @@ class Operator {
     final static String boolMap[ ] [ ] = {
         {EQ, BOOL_EQ}, {NE, BOOL_NE}, {LT, BOOL_LT},
         {LE, BOOL_LE}, {GT, BOOL_GT}, {GE, BOOL_GE},
+		{AND, AND}, {OR, OR}
     };
 
     final static private Operator map (String[][] tmap, String op) {

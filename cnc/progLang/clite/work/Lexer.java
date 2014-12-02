@@ -147,9 +147,10 @@ public class Lexer {
 
     private Token chkOpt(char c, Token one, Token two) {
 		ch = nextChar() ;
-		if (ch == '=') 
+		if (ch != c) 
 			return one ;
 		else 
+			ch = nextChar() ;
 			return two ;
 		
     }

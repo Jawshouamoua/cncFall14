@@ -44,9 +44,8 @@ public class Parser {
         match(TokenType.LeftBrace);
 		
 		Declarations decs = declarations() ;
-		Block b = programStatements() ;
+		Block b = statements() ;
 
-		System.out.println(token) ;
 
         match(TokenType.RightBrace);
         return new Program(decs, b);  // student exercise
@@ -65,37 +64,77 @@ public class Parser {
   
     private void declaration (Declarations ds) {
         // Declaration  --> Type Identifier { , Identifier } ;
-        Variable v ;
-		Declaration d ;
 		Type t = type() ;
-		v = new Variable(match(TokenType.Identifier)) ;
-		d = new Declaration(v,t) ;
-		ds.add(d) ;
+		while(!token.type().equals(TokenType.Semicolon)) {
 
-			while (isComma()) {
-				token = lexer.next() ;
-				v = new Variable(match(TokenType.Identifier)) ;
-				d = new Declaration(v,t) ;
-				ds.add(d) ;
-			}
-
-		match(TokenType.Semicolon) ;
+			Variable v = new Variable(match(TokenType.Identifier)) ;
+			ds.add(new Declaration(v,t)) ;
+			if(token.type().equals(TokenType.Comma))
+				match(TokenType.Comma) ;
 		}
 
+		System.out.println("done") ;
+		match(TokenType.Semicolon) ;
+	}
 
-        // student exercise
-    }
+
   
     private Type type () {
         // Type  -->  int | bool | float | char 
         Type t = null;
+		if(token.type().equals(TokenType.Int)) 
+			t = Type.INT;
+
+		else if(token.type().equals(TokenType.Bool))
+			t = Type.BOOL;
+
+		else if(token.type().equals(TokenType.Float))
+			t = Type.FLOAT;
+
+		else if(token.type().equals(TokenType.Char))
+			t = Type.CHAR;
+	
+		else error ("Error in Type Construction") ;
+
+		token = lexer.next() ;
+
         // student exercise
         return t;          
     }
   
     private Statement statement() {
         // Statement --> ; | Block | Assignment | IfStatement | WhileStatement
-        Statement s = new Skip();
+        Statement s = null ;
+
+		//skip
+		if(token.type().equals(TokenType.Semicolon))
+			s = new Skip() ;
+			//token = lexer.next() ;
+	
+		//assignment
+		else if(token.type().equals(TokenType.Identifier))
+			s = assignment() ;
+
+		//block
+		else if(token.type().equals(TokenType.LeftBrace)) {
+			token = lexer.next() ;
+			s = statements() ;
+			match(TokenType.RightBrace) ;
+		}
+		
+		//if statement
+		else if (token.type().equals(TokenType.If)) {
+			token = lexer.next() ;
+			s = ifStatement() ;
+		}
+			
+		
+		//while statement
+		else if (token.type().equals(TokenType.While)) {
+			token = lexer.next() ; 
+			s = whileStatement() ;
+		}
+		else error("Illegal statement") ;
         // student exercise
         return s;
     }
@@ -103,6 +142,11 @@ public class Parser {
     private Block statements () {
         // Block --> '{' Statements '}'
         Block b = new Block();
+
+
+		while(!token.type().equals(TokenType.RightBrace)) 
+			b.members.add(statement()) ;
+
         // student exercise
         return b;
     }
@@ -123,33 +167,66 @@ public class Parser {
   
     private Conditional ifStatement () {
         // IfStatement --> if ( Expression ) Statement [ else Statement ]
-        return null;  // student exercise
+        Statement s = null ;
+		Statement s2 = null ;
+        match(TokenType.LeftParen) ;
+		Expression e = expression() ;
+		match(TokenType.RightParen) ;
+		s = statement() ;
+		if(token.type().equals(TokenType.Else)) 
+			s2 = statement() ;
+        return new Conditional(e, s, s2) ;  // student exercise
     }
   
     private Loop whileStatement () {
         // WhileStatement --> while ( Expression ) Statement
-        return null;  // student exercise
+        match(TokenType.LeftParen) ;
+		Expression e = expression() ;
+		match(TokenType.RightParen) ;
+		Statement s = statement() ;
+        return new Loop(e,s) ;  // student exercise
     }
 
     private Expression expression () {
         // Expression --> Conjunction { || Conjunction }
-
-        return(conjunction()) ;  // student exercise
+        Expression e = conjunction() ;
+		while (token.type().equals(TokenType.Or)) {
+			Operator op = new Operator(match(token.type())) ;
+			Expression term2 = conjunction() ;
+			e = new Binary(op,e,term2) ;
+		}
+        return e;  // student exercise
     }
   
     private Expression conjunction () {
         // Conjunction --> Equality { && Equality }
-        return (equality());  // student exercise
+        Expression e = equality() ;
+		while (token.type().equals(TokenType.And)) {
+			Operator op = new Operator(match(token.type())) ;
+			Expression term2 = equality() ;
+			e = new Binary(op,e,term2) ;
+		}
+        return e ;  // student exercise
     }
   
     private Expression equality () {
         // Equality --> Relation [ EquOp Relation ]
-        return (relation());  // student exercise
-    }
-
-    private Expression relation (){
+        Expression e = relation() ;
+		while (isEqualityOp()) {
+			Operator op = new Operator(match(token.type())) ;
+			Expression term2 = relation() ;
+			e = new Binary(op,e,term2) ;
+		}
+        return e;  // student exercise
+    } private Expression relation (){
         // Relation --> Addition [RelOp Addition] 
-        return (addition());  // student exercise
+        Expression e = addition() ;
+		while (isRelationalOp()) {
+			Operator op = new Operator(match(token.type())) ;
+			Expression term2 = addition() ;
+			e = new Binary(op,e,term2) ;
+		}
+        return e;  // student exercise
     }
   
     private Expression addition () {
@@ -208,21 +285,28 @@ public class Parser {
 
     private Value literal( ) {
 
-		match(TokenType.IntLiteral);
-		int myVal = Integer.parseInt(token.value()) ;
+		String s = null ;
+		switch (token.type()) {
+		
+		case IntLiteral:
+			s = match(TokenType.IntLiteral);
+			return new IntValue(Integer.parseInt(s)) ;
+		case CharLiteral:
+			s = match(TokenType.CharLiteral) ;
+			return new CharValue(s.charAt(0)) ;
+		case True:
+			s = match(TokenType.True) ;
+			return new BoolValue(true) ;
+		case False:
+			s = match(TokenType.False) ;
+			return new BoolValue(false) ;
+		case FloatLiteral:
+			s = match(TokenType.FloatLiteral) ;
+			return new FloatValue(Float.parseFloat(s)) ;
+		}
+		throw new IllegalArgumentException("should not reach here") ;
 	
-        return new IntValue(myVal) ;  // student exercise
     }
-/* 
-    private String match (TokenType t) {
-        String value = token.value();
-        if (token.type().equals(t))
-            token = lexer.next();
-        else
-            error(t);
-        return value;
-    }
-*/
 
     private boolean isAddOp( ) {
         return token.type().equals(TokenType.Plus) ||
@@ -273,7 +357,8 @@ public class Parser {
     public static void main(String args[]) {
         Parser parser  = new Parser(new Lexer(args[0]));
         Program prog = parser.program();
-        prog.display();           // display abstract syntax tree
+		String s = "" ;
+        prog.display(s);           // display abstract syntax tree
     } //main
 
 } // Parser

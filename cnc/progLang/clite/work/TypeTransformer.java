@@ -28,6 +28,31 @@ public class TypeTransformer {
                 return new Binary(b.op.boolMap(b.op.val), t1,t2);
             throw new IllegalArgumentException("should never reach here");
         }
+		if (e instanceof Unary) {
+			Unary u = (Unary)e ;
+			Type ttype = StaticTypeCheck.typeOf(u.term, tm) ;
+			Expression t = T(u.term, tm) ;
+			System.err.println("TT: " + u.op) ;
+			if(u.op.equals(Operator.NOT)) 
+				return new Unary(u.op, t) ;
+			else if (u.op.equals(Operator.NEG)) {
+				if(ttype == Type.INT) 
+					return new Unary(u.op.intMap(u.op.val), t) ;
+				else if(ttype == Type.FLOAT)
+					return new Unary(u.op.floatMap(u.op.val),t) ;
+			}
+			else if (u.op.equals(Operator.FLOAT) || u.op.equals(Operator.CHAR))
+				return new Unary(u.op.intMap(u.op.val),t) ;
+			else if (u.op.equals(Operator.INT)) {
+				if(ttype == Type.FLOAT) 
+					return new Unary(u.op.floatMap(u.op.val),t) ;
+				else if (ttype == Type.CHAR) 
+					return new Unary(u.op.charMap(u.op.val),t) ;
+			}
+			else
+				throw new IllegalArgumentException("should never reach here") ;
+		}
+
         // student exercise
         throw new IllegalArgumentException("should never reach here");
     }
@@ -83,15 +108,16 @@ public class TypeTransformer {
     public static void main(String args[]) {
         Parser parser  = new Parser(new Lexer(args[0]));
         Program prog = parser.program();
-        // prog.display();           // student exercise
+		String s = "" ;
+        prog.display(s);           // student exercise
         System.out.println("\nBegin type checking...");
         System.out.println("Type map:");
         TypeMap map = StaticTypeCheck.typing(prog.decpart);
-        // map.display();    // student exercise
+        map.display();    // student exercise
         StaticTypeCheck.V(prog);
         Program out = T(prog, map);
         System.out.println("Output AST");
-        // out.display();    // student exercise
+        out.display(s);    // student exercise
     } //main
 
     } // class TypeTransformer

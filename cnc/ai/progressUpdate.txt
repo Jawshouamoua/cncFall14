@@ -1,0 +1,12 @@
+I have created a NQueens example and an 8-puzzle example. 
+
+In the NQueens problem, I used depth-first search with backtracking to find a solution. However, my recursive calls the the algorithm aren't working
+correctly and the way the program compares spaces for queens doesn't quite work either, so it doesn't find a solution yet. I still intend to work
+on this.
+
+In the 8-puzzle, I am using A* search to find a solution. I have two heuristic functions, hamming distance and manhattan distance. The code isn't
+complete yet and I am working on how to get determine whether there is a solution to a randomly seeded puzzle. I know that it deals with inversions
+and whether there is a odd or even amount of inversions. Also, I think I could've designed the program a little better, so I'll try a different way
+to organize this problem in the future.
+
+

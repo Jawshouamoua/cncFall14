@@ -112,7 +112,10 @@ CRFP
 
 >	groupByN n = takeWhile (not . null) . map fst . drop 1 . iterate (splitAt n . snd) . (\a -> ([],a))
 
-	group : Eq a => [a] -> [[a]]
+>	group' :: Eq a => [a] -> [[a]]
+>	group' [] = []
+>	group' (x:xs) = (x:ys) : group zs
+>		where (ys,zs) = span (== x) xs
 
 
 

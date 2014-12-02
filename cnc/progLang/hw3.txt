@@ -39,14 +39,24 @@ expression-----> expr -----> integer
 		   ---op-----							
 
 3.1
+Identifier -> Letter I' 
+I' -> Letter I' | Digit I' | Letter | Digit
 
+Float -> 0.Integer | ... | 9.Integer 
 
 
 3.2
+Identifier -> Letter I"
+I" -> I" Letter | I" Digit | Letter | Digit
+
+Float -> Integer.0 | ... | Integer.9
 
 
 3.3
-
+___d___    _ld_
+|     |  l |  |   $
+----> S ----> I -----> F
 
 3.4
 
+S -> aSb | lambda

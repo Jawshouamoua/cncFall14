@@ -1,5 +1,6 @@
 // StaticTypeCheck.java
 
+
 import java.util.*;
 
 // Static type checking for Clite is defined by the functions 
@@ -93,6 +94,17 @@ public class StaticTypeCheck {
             return;
         }
         // student exercise
+        
+		if (e instanceof Unary) {
+			Unary u = (Unary)e ;
+			Type ttype = typeOf(u.term, tm) ;
+			V(u.term, tm) ;
+			if(u.op.NotOp())
+				check(ttype == Type.BOOL, "type error for " + u.op) ;
+			return ;
+		}
+
+	
         throw new IllegalArgumentException("should never reach here");
     }
 
@@ -121,13 +133,41 @@ public class StaticTypeCheck {
             return;
         } 
         // student exercise
+        if (s instanceof Conditional) {
+			Conditional c = (Conditional)s ;
+			V(c.test, tm) ;
+			Type ttype = (Type)tm.get(c.test) ;
+			if(ttype == Type.BOOL) {
+				V(c.thenbranch, tm) ;
+				V(c.elsebranch, tm) ;
+			}
+			return ;
+		}
+
+		if (s instanceof Loop) {
+			Loop l = (Loop)s ;
+			V(l.test, tm) ;
+			Type ttype = (Type)tm.get(l.test) ;
+			if(ttype == Type.BOOL) 
+				V(l.body, tm) ;
+			return ;
+		}
+
+		if (s instanceof Block) {
+			Block b = (Block)s ;
+			for(Statement ss : b.members) 
+				V(ss, tm) ;
+			return ;
+		}
+
         throw new IllegalArgumentException("should never reach here");
     }
 
     public static void main(String args[]) {
         Parser parser  = new Parser(new Lexer(args[0]));
         Program prog = parser.program();
-        // prog.display();           // student exercise
+		String s = "" ;
+        prog.display(s);           // student exercise
         System.out.println("\nBegin type checking...");
         System.out.println("Type map:");
         TypeMap map = typing(prog.decpart);
