@@ -6,7 +6,9 @@
 
 >	newtype Set a = Set [a]
 
->	instance Ord Set where
+>	instance Eq a => Eq (Set a) where
+>		(==) m1 m2 = all (`elem` (toList m2)) (toList m1)
+>		(/=) m1 m2 = not $ all (`elem` (toList m2)) (toList m1)
 
 
 
@@ -22,6 +24,7 @@
 >	empty = Set []
 
 >	fromList :: Ord a => [a] -> Set a 
+>	fromList [] = empty
 >	fromList l = Set l
 
 >	toList :: Ord a => Set a -> [a]

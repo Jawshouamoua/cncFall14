@@ -18,16 +18,44 @@ T -> T,S | S
 
 
 4.1
+a)
+Haskell has no variable declarations. It infers the type based on the code.
+b)
+There are no overloading of operators in Python, but functions can be
+overloaded.
+c)
+Python's closures are late binding meaning that the values of variables
+used in closures are looked up at the time the inner functions is called.
+d)
+Tabs constitute scope for Python.
+e)
+no declarations
 
  
 
 4.2
-
+a)
+They can be accessed using the declaration "extern".
+b)
+Structs hide data from other modules.
+c)
+So other units can't change the global variable.
 
 4.3
 
-
+C++ has more delcarations than c, like asm, new, this, etc..
+ 
 4.5
-
+a)
+The identifier is the same, so just the type is not enough to create a 
+unqiue variable.
+b)
+Overloaded functions redefines the function rather than redeclares it.
 
 4.6
+examples of l-values are identifiers of integral, floating, pointer,
+structure, or union type; a subscript expression that doesn't evaluate
+to an array; a member-selection expression (-> or .); or a unary-
+indirection expression that doesn't refer to an array. All l-values can
+be r-values, but not r-values can be l-values.
+

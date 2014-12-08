@@ -118,11 +118,28 @@ CRFP
 
 4.20
 
->	sqRoot :: Float -> Integer
->	sqRoot x = floor (sqrt x)
+>	sqRoot'' :: Integer -> Integer
+>	sqRoot'' n = maximum $ sqRoot' 1 n
+
+>	sqRoot' :: Integer -> Integer -> [Integer]
+>	sqRoot' b n
+>		| b*b > n	= [] 
+>		| otherwise	= b : sqRoot' (b+1) n
 
 4.21
 
+>	max2n :: Integer -> Integer
+>	max2n n = maximum $ max2n' n
+
+>	max2n' :: Integer -> [Integer]
+>	max2n' 0 = [fa 0]
+>	max2n' n = (fa n) : max2n' (n-1)
+
+>	fa :: Integer -> Integer
+>	fa 0 = 0
+>	fa 1 = 44
+>	fa 2 = 17
+>	fa _ = 0
 
 
 4.31

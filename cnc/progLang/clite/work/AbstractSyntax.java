@@ -14,9 +14,9 @@ class Program {
     }
 
 	public void display(String s) {
-		System.out.println("Display abstract syntax") ;
+		System.out.println("Program:") ;
 
-		s = s + "\t" ;
+		s = s + "   " ;
 		decpart.display(s) ;
 		body.display(s) ;
 
@@ -29,7 +29,12 @@ class Declarations extends ArrayList<Declaration> {
     // (a list of declarations d1, d2, ..., dn)
     
 	public void display(String s) {
-		System.out.println(s + "display declarations object") ;
+		System.out.println(s + "Declarations:") ;
+		s = s + "   " ;
+		for(int i = 0; i < size(); i++)	{
+			get(i).display(s) ;	
+
+		}
 	}
 
 
@@ -45,8 +50,9 @@ class Declaration {
     } // declaration */
 
 	public void display(String s) {
-		System.out.println(s + "display Declaration object") ;
-		s = s + "\t" ;
+		System.out.print(s + "Declaration:") ;
+		System.out.println(" <" + v + ", " + t + "> ") ;
+		s = s + "   " ;
 		t.display(s) ;
 		v.display(s) ;
 	}
@@ -68,7 +74,7 @@ class Type {
     public String toString ( ) { return id; }
 	
 	public void display(String s) {
-		System.out.println(s + "display type object") ;
+		System.out.println(s + "Type: " + toString()) ;
 
 	}
 }
@@ -77,7 +83,7 @@ abstract class Statement {
     // Statement = Skip | Block | Assignment | Conditional | Loop
     //
     public void display(String s) {
-		System.out.println(s + "display Statement") ;
+		System.out.println(s + "Statement:") ;
 	}
 
 }
@@ -92,8 +98,8 @@ class Block extends Statement {
     public ArrayList<Statement> members = new ArrayList<Statement>();
 
 	public void display(String s) {
-		System.out.println(s + "display Block") ;
-		s = s + "\t" ;
+		System.out.println(s + "Block:") ;
+		s = s + "   " ;
 		for(Statement ss : members)
 			ss.display(s) ;
 	}
@@ -111,8 +117,8 @@ class Assignment extends Statement {
     }
 
 	public void display(String s) {
-		System.out.println(s + "display Assignment") ;
-		s = s + "\t" ;
+		System.out.println(s + "Assignment:") ;
+		s = s + "   " ;
 		target.display(s) ;
 		source.display(s) ;
 	}
@@ -134,7 +140,8 @@ class Conditional extends Statement {
     }
 
 	public void display(String s) {
-		System.out.println(s + "display Conditional object") ;
+		System.out.println(s + "Conditional:") ;
+		s = s + "   " ;
 		test.display(s) ;
 		thenbranch.display(s) ;
 		elsebranch.display(s) ;
@@ -152,8 +159,8 @@ class Loop extends Statement {
     }
 
 	public void display(String s) {
-		System.out.println(s + "display loop object") ;
-		s = s + "\t" ;
+		System.out.println(s + "Loop:") ;
+		s = s + "   " ;
 		test.display(s) ;
 		body.display(s) ;
 	}
@@ -164,7 +171,7 @@ abstract class Expression {
     // Expression = Variable | Value | Binary | Unary
     //
     public void display(String s) {
-		System.out.println(s + "display Expression") ;
+		System.out.println(s + "Expression:") ;
 	}
 
 }
@@ -185,7 +192,7 @@ class Variable extends Expression {
     public int hashCode ( ) { return id.hashCode( ); }
 
 	public void display(String s) {
-		System.out.println(s + "display variable object") ;
+		System.out.println(s + "Variable: " + this.toString()) ;
 
 	}
 
@@ -230,7 +237,7 @@ abstract class Value extends Expression {
     }
 
 	public void display(String s) {
-		System.out.println(s + "display Value") ;
+		System.out.println(s + "Value:") ;
 	}
 }
 
@@ -250,6 +257,10 @@ class IntValue extends Value {
         if (undef)  return "undef";
         return "" + value;
     }
+	
+	public void display(String s) {
+		System.out.println(s + "Value: " + value ) ;
+	}
 
 }
 
@@ -275,6 +286,10 @@ class BoolValue extends Value {
         return "" + value;
     }
 
+	public void display(String s) {
+		System.out.println(s + "Value: " + value ) ;
+	}
+
 }
 
 class CharValue extends Value {
@@ -294,6 +309,9 @@ class CharValue extends Value {
         return "" + value;
     }
 
+	public void display(String s) {
+		System.out.println(s + "Value: " + value ) ;
+	}
 }
 
 class FloatValue extends Value {
@@ -313,6 +331,9 @@ class FloatValue extends Value {
         return "" + value;
     }
 
+	public void display(String s) {
+		System.out.println(s + "Value: " + value ) ;
+	}
 }
 
 class Binary extends Expression {

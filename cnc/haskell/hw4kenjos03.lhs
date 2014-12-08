@@ -1,3 +1,5 @@
+>	import Data.Char
+
 H99P
 
 
@@ -108,14 +110,96 @@ CRFP
 >	composeList :: [b -> b] -> a -> b
 >	composeList (x:xs) = x . composeList xs
 
+7.
+
 >	composeList' xs = foldl (.) xs
 
+8.
+
 >	groupByN n = takeWhile (not . null) . map fst . drop 1 . iterate (splitAt n . snd) . (\a -> ([],a))
+
+9.
 
 >	group' :: Eq a => [a] -> [[a]]
 >	group' [] = []
 >	group' (x:xs) = (x:ys) : group zs
 >		where (ys,zs) = span (== x) xs
 
+10.
+
+>	groupBy :: Eq a => (a -> a -> Bool) -> [a] -> [[a]]
+>	groupBy f (x:xs) = (x:ys) : group zs
+>		where (ys,zs) = span (f x) xs
+
+CRFP 6.44
+
+>	type Name = String
+>	type Price = Integer
+>	type BarCode = Integer
+
+>	type Database = [ (BarCode,Name,Price) ]
+
+>	codeIndex :: Database
+>	codeIndex = [	(4719, "Fish Fingers", 121),
+>					(5643, "Nappies", 1010),
+>					(3814, "Orange Jelly", 56),
+>					(1111, "Hula Hoops", 21),
+>					(1112, "Hula Hoops (Giant)", 133),
+>					(1234, "Dry Sherry, 1lt", 540) ]
+
+>	type TillType = [BarCode]
+>	type BillType = [(Name,Price)]
+
+>	fst' :: (Integer, String, Integer) -> Integer
+>	fst' (x, _, _) = x
+
+>	mid :: (Integer, String, Integer) -> String
+>	mid (_, x, _) = x
+
+>	lst :: (Integer, String, Integer) -> Integer
+>	lst (_, _, x) = x
+
+>	makeBill :: TillType -> BillType
+>	makeBill [] = []
+>	makeBill (t:ts) = (mid $ findr t codeIndex,
+>						lst $ findr t codeIndex) : makeBill ts
+
+>	findr :: BarCode -> Database -> (BarCode,Name,Price)
+>	findr _ [] = (0000, "Unknown Item", 0)
+>	findr n (x:xs)
+>		| n == (fst' x)		= x
+>		| otherwise			= findr n xs
+							
+>	formatPence :: Price -> String
+>	formatPence p = (show $ div p 100) ++ "." ++ (show $ mod p 100)
+
+>	formatLine :: (Name, Price) -> String
+>	formatLine (x,y) = x ++ z ++ formatPence y ++ "\n"
+>		where
+>			z =	 take (lineLength-((length x) + (length $ formatPence y)))
+>				 $ repeat '.'
+
+>	formatLines :: [ (Name, Price) ] -> String
+>	formatLines [] = ""
+>	formatLines (x:xs) = formatLine x ++ formatLines xs
+
+>	makeTotal :: BillType -> Price
+>	makeTotal xs = foldl (\a (x,y) -> a + y) 0 xs
+
+>	formatTotal :: Price -> String 
+>	formatTotal n = "\nTotal" ++ z ++ formatPence n
+>		where
+>			y = lineLength-((length "Total") + (length $ formatPence n))
+>			z=take y $ repeat '.'
+
+>	formatBill :: BillType -> String
+>	formatBill xs = formatLines xs ++ formatTotal ( makeTotal xs )
+
+
+>	produceBill :: TillType -> String
+>	produceBill = formatBill . makeBill
+
+>	lineLength :: Int
+>	lineLength = 30 
 
 

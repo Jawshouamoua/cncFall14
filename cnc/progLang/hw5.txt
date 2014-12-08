@@ -1,0 +1,75 @@
+Programming language homework #6
+Joshua Kendall
+
+5.1
+
+for C, the basic types are short, int, long, float, double, and char.
+int: 32 bits
+long: 64 bits
+float: 32 bits
+double: 64 bits
+char: 8 bits
+
+5.2
+In haskell, Bool is ordered but it is not convertible to a integer.
+In some languages, it might be useful to have bools convert to ints,
+but for haskell, I don't think this is necessary or helpful because
+haskell has a strict typing system and this could cause problems with
+the overall functionality of haskell.
+
+5.3
+
+This is useful because it seems like it's a safety feature so that
+non-bool types can't be used to logical tests. This is so that a java
+program can't do something it's not supposed to.
+
+5.5
+
+0.2
+00111110010011001100110011001101
+
+0.5
+00111111000000000000000000000000
+
+0.3
+00111110100110011001100110011010
+
+1.0
+00111111100000000000000000000000
+
+
+5.7
+
+union thirtyTwoBit {
+	int i;
+	int r ;
+	String bit ;
+
+	for(int j=0; j<32; j++) {
+		if(i >= 2**j) {
+			i =	i - 2**j ;
+			bit += "1" ;	
+		else
+			bit += "0" ;
+	}
+}
+
+5.9
+Big-endianess stores the most significant byte of a work in the smallest
+address. An example is the IBM z/Architecture.
+
+Little-endianess stores the least significant bit of a word in the smallest
+address. An example is the Intel x86 machine.
+
+
+5.14
+
+The assignment of a and b throws an error because it could be referring to
+the address of the array instead of the array itself. This could be fixed
+with &a = &b.
+
+
+5.19
+
+
+
