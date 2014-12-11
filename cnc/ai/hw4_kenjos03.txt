@@ -1,0 +1,34 @@
+Joshua Kendall
+AI Homework 4
+Ch 13: 3-5, 7-9, 13 18, 22
+
+3.
+a)
+P(a|b,c) = P(b,c) and P(a) / P(b,c)
+
+P(b|a,c) = P(a,c) and P(b) / P(a,c)
+
+P(a|c) = P(a and c) / P(c)
+
+P(b|c) = P(b and c) / P(c)
+
+If P(a|b,c) = P(b|a,c), then a and b are equivalent.
+
+b)
+If P(a|b,c) = P(a), then P(b,c) P(a) and P(b,c) are independent.
+Therfore, P(b|c) = P(b) is not necessarily true because the hypothesis
+only says that P(a) is dependent from P(b and c). P(b and c) could 
+still be dependent, but P(b|c) = P(b) implies that P(b) is also
+independent.
+
+c)
+False,
+If P(a|b) = P(a), then p(a,b) = P(a)
+P(a|b,c) = P(a,c)/P(b,c) or P(b,c)/P(b,c) which neither is
+P(a|c)
+
+4.
+It is not rational to have the belief that p(a or b) = 0.5 if
+P(a) = 0.4 and P(b) = 0.3. This is not consistant with the basic
+axioms of probability.
+
