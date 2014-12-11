@@ -185,7 +185,7 @@ public class Semantics {
         Parser parser  = new Parser(new Lexer(args[0]));
         Program prog = parser.program();
 		String s = "" ;
-        //prog.display(s);    // student exercise
+        prog.display(s);    // student exercise
         System.out.println("\nBegin type checking...");
         System.out.println("Type map:");
         TypeMap map = StaticTypeCheck.typing(prog.decpart);
@@ -193,10 +193,10 @@ public class Semantics {
         StaticTypeCheck.V(prog);
         Program out = TypeTransformer.T(prog, map);
         System.out.println("Output AST");
-        //out.display(s);    // student exercise
+        out.display(s);    // student exercise
         Semantics semantics = new Semantics( );
         State state = semantics.M(out);
         System.out.println("Final State");
-        // state.display( );  // student exercise
+        state.display();  // student exercise
     }
 }

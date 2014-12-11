@@ -71,5 +71,29 @@ with &a = &b.
 
 5.19
 
+Concrete Syntax
+
+Declaration -> Type Identifier [ [Integer] ] {, Identifier[ [Integer] ] } ; |
+				Type Identifer [ [Integer] ] { {Identifier[ [Integer] ] ; } } ;
+
+Type -> int | bool | float | char | struct
+
+Expression -> Struct . Expression
+Struct -> Conjunction { || Conjunction }
+	
+Assignment = Identifier[ [Expression] ] = Expression ; |
+			Identifier.Identifier = Expression ;
+
+Abstract syntax
+
+Declaration = VariableDec | ArrayDec | StructDec
+StructDec = Variable v, structVar*
+StructVar = Variable v, Type t
+
+Expression = VariableRef | Value | Binary | Unary | Struct
+Struct = VariableRef source ; VariableRef obj ;
+
+Assignment = Ref target ; Expression source
+Ref = VariableRef | VariableRef . VariableRef
 
 

@@ -1,4 +1,5 @@
 >	module Frequency (frequency) --[Char] -> [(Char,Int)]
+>		where
 
 >	mergeSort :: ([a] -> [a] -> [a]) -> [a] -> [a]
 >	mergeSort merge xs

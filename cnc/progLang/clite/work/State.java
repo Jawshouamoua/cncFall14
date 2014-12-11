@@ -21,4 +21,9 @@ public class State extends HashMap<Variable, Value> {
         return this;
     }
 
+	public void display() {
+		System.out.println(this.entrySet()) ;
+
+	}
+
 }

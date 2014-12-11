@@ -1,4 +1,5 @@
 >	module CodeTable (codeTable) -- Tree -> Table
+>		where
 >	import Types
 
 >	convert :: HCode -> Tree -> Table
