@@ -5,12 +5,12 @@ import java.util.*;
 
 class Program {
     // Program = Declarations decpart ; Block body
-    Declarations decpart;
-    Block body;
+    Declarations globals;
+    Functions functs ;
 
-    Program (Declarations d, Block b) {
+    Program (Declarations d, Functions f) {
         decpart = d;
-        body = b;
+        functs = f;
     }
 
 	public void display(String s) {
@@ -21,6 +21,41 @@ class Program {
 		body.display(s) ;
 
 	}
+
+}
+
+class Functions extends ArrayList<Functions> {
+	// Functions = Function*
+	
+
+
+}
+
+class Function {
+	//Function = Type t; String id; Declarations params, locals; Block body
+	
+	Type t ;
+	String id;
+	Declarations params, locals ;
+	Block b ;
+
+	Function(Type type, String identif, Declarations parameters,
+			Declarations local, Block block) {
+		
+		t = type ;
+		id = identif ;
+		params = parameters ;
+		locals = local ;
+		b = block ;
+	}
+	
+	public void display(String s) {
+		System.out.println(s + "Display Function") ;
+
+	}
+
+}
+	
 
 }
 
@@ -60,11 +95,12 @@ class Declaration {
 }
 
 class Type {
-    // Type = int | bool | char | float 
+    // Type = int | bool | char | float | void
     final static Type INT = new Type("int");
     final static Type BOOL = new Type("bool");
     final static Type CHAR = new Type("char");
     final static Type FLOAT = new Type("float");
+	final static Type VOID = new Type("void") ;
     // final static Type UNDEFINED = new Type("undef");
     
     private String id;
@@ -80,7 +116,7 @@ class Type {
 }
 
 abstract class Statement {
-    // Statement = Skip | Block | Assignment | Conditional | Loop
+    // Statement = Skip | Block | Assignment | Conditional | Loop | Call | Return
     //
     public void display(String s) {
 		System.out.println(s + "Statement:") ;
