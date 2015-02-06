@@ -1,0 +1,123 @@
+Joshua Kendall
+Functional DS Midterm 2015
+February 5, 2015
+
+1.
+
+a)
+
+class Set() {
+
+	int[] s ;
+	int size = 100 ;
+	int index = 0;
+
+	public Set() {
+		this.s = new Int[this.size]
+	}
+
+	public boolean member(int n) {
+
+		for(int i=0;i<this.index;i++) {
+			if(this.q[i]==n)
+				return true ;	
+		}
+		return false ;
+	}
+
+
+	public void insert(int n) {
+
+		if(!this.member(n)) {
+			this.s[index] = n ;
+			this.index++ ;
+		}
+
+	}
+
+
+	public void remove(int n) {
+
+		for(int i=0;i<this.index;i++) {
+			if(this.q[i]==n) {
+				for(int j=i;i<(this.index-1);i++) 
+					this.q[j] = this.q[j+1] ;
+				
+				index-- ;
+			}
+		}
+	}
+}
+
+b)
+
+> data Set a = Empty | Set [Integer]
+>	deriving Show
+
+> member :: Integer -> Set a -> Bool 
+> member _ Empty = False
+> member x (Set xs) = foldl (\acc y -> if y == x then True else acc) False xs
+
+> insert :: Integer -> Set a -> Set a
+> insert n Empty = Set [n]
+> insert n (Set xs)
+> 	| member n (Set xs)	= Set xs
+>	| otherwise			= Set (x:xs)
+
+> remove :: Integer -> Set a -> Set a
+> remove n Empty = Empty
+> remove n (Set (x:xs))  
+> 	| n == x	= xs
+>	| otherwise = x:remove n (Set xs)
+
+
+2.
+
+If I wanted to add union, intersect, and seteq behaviors to Set:
+-In Java, I could use the existing methods on every element of one list
+to compare to each element in the other list, removing/adding elements to
+one list depending on if it was a union or intersect. The seteq behavior
+however could also use the member function applied to each element of both
+lists.
+
+-In Haskell, the same applies. New functions wouldn't need to be created,
+but rather the existing functions could be mapped onto one list and applied
+to another list. 
+
+3. The qualified types needed for the about set implementation is Eq, Show, Num,
+and Real.
+
+Set with characteristic function:
+
+> data Set a = Set [a]
+
+> instance Eq a => Eq (Set a) where
+>	s == t 	= subset s t && subset t s
+
+> subset (Set ss) t = all (member t) ss
+
+
+4. 1,2,3,4,5,9,8,7,6
+
+T B E 1 E
+T B E 1 (T R E 2 E)
+T B E 1 (T R E 2 (T R E 3 E)) = T B (T B E 1 E) 2 (T B E 3 E)
+T B (T B E 1 E) 2 (T B E 3 (T R E 4 E)) 
+
+
+5. 
+
+> data prList a = PList [a] [a]
+
+> append n (Plist xs ys) = PList x1s (n:ys)
+
+> length (PList [] []) = 0
+> length (PList xs ys) = length xs + length ys
+
+> foldPList f (PList xs ys) = foldr f (xs:reverse ys)
+
+> mapPList f (PList xs ys) = PList (map f xs) (map f ys)
+
+> reversePList (PList xs ys) = PList (reverse xs) (reverse ys)
+
+

@@ -12,12 +12,17 @@
 instance Functor (a,b) where
 	fmap = mapTuple'
 
-> newtype Arrow a = 
+> newtype Arrow r a =  Arrow (r -> a)
 
-> mapArrow :: (b -> a) -> (c -> b) -> c -> a
-> mapArrow f g = (\x -> f (g x)) 
+> mapArrow :: (b -> a) -> Arrow c b -> Arrow c a
+> mapArrow f (Arrow g) = Arrow (\x -> f (g x)) 
 
- instance Functor ((->) r) where
-	fmap = mapArrow
+> instance Functor (Arrow r) where
+>	fmap = mapArrow
 
+> newtype MyIO a = MyIO (IO a)
 
+> mapIO :: (a -> b) -> MyIO a -> MyIO b
+> mapIO f (MyIO m) = do
+>	 x <- m 	
+>	 return MyIO (f x) 

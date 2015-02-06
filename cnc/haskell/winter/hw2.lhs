@@ -17,7 +17,7 @@
 >		line <- getLine
 >		line1 <- getLine
 >		putStr "Sum:"
->		putStrLn (show $ (read line) + (read line1))
+>		putStrLn show $ (read line) + (read line1)
 
 8.12
 
@@ -127,8 +127,37 @@
 
 8.18
 
+> mkList :: [Integer] -> IO()
+> mkList s = do
+>		putStrLn ("input number, duuude")
+>		line <- getLine
+>		if (read line) == 0
+>		then do
+>			let s' = insertion_sort (<=) s
+>			putStr ("[")
+>			let prntLst l@(x:xs) = do
+>				if xs == []
+>				then do 	
+>					putStrLn ((show x) ++ "]")
+>				else do
+>					putStr ((show x) ++ ",")
+>					prntLst xs	
+>			prntLst s'
+>		else do
+>			mkList ((read line):s)
 
+> insertion_sort :: (a -> a -> Bool) -> [a] -> [a]
+> insertion_sort pred []	= []
+> insertion_sort pred (x:xs) = insert pred x (insertion_sort pred xs)
 
+> insert :: (a -> a -> Bool) -> a -> [a] -> [a] 
+> insert pred x [] = [x] 
+> insert pred x (y:ys)
+> 		| pred x y = (x:y:ys)
+> 		| otherwise = y:(insert pred x ys)
 
 
 8.19
+
+whileCopy reads a string and outputs the string until and empty string
+is read. 

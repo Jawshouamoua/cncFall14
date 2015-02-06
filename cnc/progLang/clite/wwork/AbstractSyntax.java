@@ -57,8 +57,6 @@ class Function {
 }
 	
 
-}
-
 class Declarations extends ArrayList<Declaration> {
     // Declarations = Declaration*
     // (a list of declarations d1, d2, ..., dn)
@@ -113,6 +111,11 @@ class Type {
 		System.out.println(s + "Type: " + toString()) ;
 
 	}
+}
+
+class Statements extends ArrayList<Statement> {
+	//Statements = Statement*
+
 }
 
 abstract class Statement {
@@ -203,8 +206,38 @@ class Loop extends Statement {
     
 }
 
+class Call extends Statement {
+	//Call = String name ; Expressions args
+	String name ;
+	Expressions args ;
+
+	Call (String n, Expressions arguments) {
+		name = n ;
+		args = arguments ;
+	}
+
+	public void display(String s) {
+		System.out.println("display Call statement") ;
+	}
+}
+
+class Return extends Statement {
+	//Return = Variable target; Expression result
+	Variable target ;
+	Expression result ;
+
+	Return (Variable v, Expression e) {
+		target = v ; result = e ;
+	}
+
+	public void display(String s) {
+		System.out.println("display Return statement") ;
+	}
+
+}
+
 abstract class Expression {
-    // Expression = Variable | Value | Binary | Unary
+    // Expression = Variable | Value | Binary | Unary | Call
     //
     public void display(String s) {
 		System.out.println(s + "Expression:") ;
@@ -391,6 +424,11 @@ class Unary extends Expression {
     Unary (Operator o, Expression e) {
         op = o; term = e;
     } // unary
+
+}
+
+class Call extends Expression {
+
 
 }
 
