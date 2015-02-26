@@ -14,6 +14,9 @@
 >	eval (Mul e1 e2) = (eval e1) * (eval e2)
 >	eval (Div e1 e2) = (eval e1) `div` (eval e2)
 
+>	l1 = [(Add (Lit 5) (Lit 3)), (Sub (Lit 5) (Lit 2)), (Mul (Lit 2) (Lit 5)), (Div (Lit 6) (Lit 3))]
+>	mapEval = map eval l1
+
 >	show' :: Expr -> String
 >	show' (Lit n) = show n 
 >	show' (Add e1 e2) = "(" ++ show' e1 ++ "+" ++ show' e2 ++ ")"
@@ -21,12 +24,18 @@
 >	show' (Mul e1 e2) = "(" ++ show' e1 ++ "*" ++ show' e2 ++ ")"
 >	show' (Div e1 e2) = "(" ++ show' e1 ++ "/" ++ show' e2 ++ ")"
 
+>	mapShow = map show' l1
+
 >	size :: Expr -> Integer
 >	size (Lit n) = 0
 >	size (Add e1 e2) = 1 + (size e1) + (size e2)
 >	size (Sub e1 e2) = 1 + (size e1) + (size e2)
 >	size (Mul e1 e2) = 1 + (size e1) + (size e2)
 >	size (Div e1 e2) = 1 + (size e1) + (size e2)
+
+>	l2 = (Add (Add (Add (Lit 5) (Lit 2)) (Lit 3)) (Lit 2))
+>	size1 = size l2
+>	mapSize' = map size l1
 
 14.5
 

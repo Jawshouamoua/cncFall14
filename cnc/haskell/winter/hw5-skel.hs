@@ -11,6 +11,9 @@
 --    Reader ((->) r) Functor to propogate failure and also abstract away
 --    from carrying an explicit environment for variables.
 
+-- Part 1 of HW5
+
+
 
 ------------------------------------------------------------------------------
 -- 1. A simple evaluator with failure propogation rather than rudely bailing
@@ -34,9 +37,9 @@ fetch x env = head [b | (a,b) <- env, x == a ]
 
 -- The evaluator with explicit plumbing of Nothing failure propogation
 evalMRef :: Expr -> Env -> Maybe Int
-evalMRef (Val x) env          = -- fill in code
-evalMRef (Var v) env          = lookup v env  -- lookup returns Maybe type
-evalMRef (BinOp op e1 e2) env = -- fill in code
+evalMRef (Val x) env          = 
+evalMRef (Var v) env          = pure (fetch x env)  -- lookup returns Maybe type
+evalMRef (BinOp op e1 e2) env = op (evalMRef e1) (evalMRef e2)
 
 
 ------------------------------------------------------------------------------
@@ -45,11 +48,14 @@ evalMRef (BinOp op e1 e2) env = -- fill in code
 
 -- Lift a binary operator to the Maybe Functor
 lift2 :: (Int -> Int -> Int) -> Maybe Int -> Maybe Int -> Maybe Int
+lift2 f e1 e2 = f <*> e1 e2
 
--- fill in code. 
 
 
 evalMRef2 :: Expr -> Env -> Maybe Int
+evalMRef2 (Val x) env = fetch x env
+evalMRef2 (Var v) env = lookup v env
+evalMRef2 (BinOp op e1 e2) env = lift2 op e1 e2
 
 -- fill in code. Use prelude "lookup" instead of fetch
 
@@ -69,8 +75,8 @@ class Functor f => Applicative f where
 
 -- The Reader ((->) r) instance of the Applicative Class for evaluation in an
 -- environment env.
-instance Functor ((->) env) where
-  fmap = (.)
+--instance Functor ((->) env) where
+ -- fmap = (.)
 
 instance Applicative ((->) env) where
   pure g = \env -> g
@@ -98,9 +104,9 @@ liftA2 g x y = pure g <*> x <*> y
 
 -- The Maybe evaluator expressed using Applicative Functors 
 evalM :: Expr -> Env -> Maybe Int
-evalM (Val x)          = -- fill in code --
-evalM (Var v)          = -- fill in code --
-evalM (BinOp op e1 e2) = -- fill in code --
+evalM (Val x)          = fetch x
+evalM (Var v)          = pure v
+evalM (BinOp op e1 e2) = pure op >>= e1 >>= e2
 
 
 ------------------------------------------------------------------------------

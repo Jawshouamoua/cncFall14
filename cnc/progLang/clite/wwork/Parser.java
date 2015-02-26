@@ -35,14 +35,13 @@ public class Parser {
         System.exit(1);
     }
 
-	public Program() {
-
-		while(isType()) {
-			if(token.type().equals(TokenType.INT) {
-				Type t = type()			
-				if(
-			}
-
+	public Program program() {
+		//Program -> {Type Identifier FunctOrGlobal} MainFunction
+		while(isType()) 
+		{
+			Declarations
+		}
+		return new Program(gs, fs) ;
 
 	}
 
@@ -73,8 +72,7 @@ public class Parser {
   
     private MainFunction() {
         // MainFunction --> void main ( ) '{' Declarations Statements '}'
-        TokenType[ ] header = {TokenType.Int, TokenType.Main,
-                         TokenType.LeftParen, TokenType.RightParen};
+        TokenType[ ] header = {TokenType.LeftParen, TokenType.RightParen};
         for (int i=0; i<header.length; i++)   // bypass "int main ( )"
             match(header[i]);
         match(TokenType.LeftBrace);

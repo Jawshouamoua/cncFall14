@@ -103,10 +103,16 @@ CRFP
 >		| m > n 	= 1
 >		| otherwise = m * (rangeProduct (m+1) n)
 
+>	t1 = rangeProduct 1 5
+>	t2 = rangeProduct 1 2
+>	t3 = rangeProduct 1 1
+
 4.18
 
 >	fac :: Int -> Int
 >	fac n = rangeProduct 1 n
+
+>	t4 = map fac [1..10]
 
 4.19
 
@@ -114,6 +120,8 @@ CRFP
 >	mult x y 
 >		| y == 0	= 0
 >		|otherwise	= x + mult x (y-1)
+
+>	t5 = [mult x y | x <- [1..5], y <- [1..5]]
 
 
 4.20
@@ -125,6 +133,8 @@ CRFP
 >	sqRoot' b n
 >		| b*b > n	= [] 
 >		| otherwise	= b : sqRoot' (b+1) n
+
+>	t6 = map sqRoot'' [1..10]
 
 4.21
 
@@ -141,6 +151,7 @@ CRFP
 >	fa 2 = 17
 >	fa _ = 0
 
+>	t7 = map max2n [0..5]
 
 4.31
 
@@ -154,27 +165,45 @@ CRFP
 >		| y == 0 			= x
 >		| otherwise			= gcf y (x `mod` y) 
 
+>	t8 = [divide x y | x <- [1..10], y <- [1..5]]
+>	t9 = [gcf x y | x <- [2,4..10], y <- [2,4..10]]
+
 4.32
 stuff 0 = 1
 stuff x = 2 * stuff (x-1)
 
 5.5
 
+see below
 
 5.7
 
 >	data Shape = 	Circle Float |
->					Rectangle Float Float
+>					Rectangle Float Float |
+>					Triangle Float Float
 >					deriving (Eq,Ord,Show) 
 
 >	area :: Shape -> Float
 >	area (Circle r)			= pi*r*r
 >	area (Rectangle h w)	= h*w
+>	area (Triangle h w) 	= (h*w)/2
 
 >	perimeter :: Shape -> Float
 >	perimeter (Circle r)		= 2 * pi * r
 >	perimeter (Rectangle h w)	= (2 * h) + (2 * w) 
+>	perimeter (Triangle h w)	= sqrt (h^^2 + w^^2)
+
+>	shapes = [(Circle 4), (Circle 2), (Rectangle 2 2), (Rectangle 4 7),
+>				(Triangle 4 4), (Triangle 6 2)]
+>	t10 = map area shapes
+>	t11 = map perimeter shapes
 
 5.9
 
+Eq class is for values that can be compared with each other. Eq is
+dependent on (==) and (/=) being defined.
 
+Ord class is for values that can be ordered. This builds off of Eq and
+is dependent on (<=) being defined.
+
+Show class is anything that can be transformed into a string. 

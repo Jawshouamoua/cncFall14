@@ -104,7 +104,7 @@ H99P
 >	perimeter :: Shape -> Float
 >	perimeter (Circle r)		= 2 * pi * r
 >	perimeter (Rectangle b h)	= (2*b) + (2*h)
->	perimeter (Triangle b h)	= (b*h)*2
+>	perimeter (Triangle b h)	= sqrt (b^^2 + h^^2)
 
 
 5.15
@@ -131,10 +131,14 @@ numbers tend to overshoot the limits.
 >	doubleAll :: [Integer] -> [Integer]
 >	doubleAll l = [ 2*m | m<-l]
 
+>	t1 = doubleAll [1..20]
+
 5.19
 
 >	capitalizeLetters :: String -> String
 >	capitalizeLetters l = [toUpper ch | ch<-l ]
+
+>	t2 = capitalizeLetters "hello bobby"
 
 
 5.20
@@ -144,27 +148,35 @@ numbers tend to overshoot the limits.
 >		| isPrime k	= [1,k]
 >		| otherwise = [n | n<- [1 .. k], k `mod` n == 0] 
 
+>	t3 = map divisors [x*2 | x <- [1..10]]
 
 >	isPrime :: Integer -> Bool
->	isPrime k = null [ n | n<- [2 .. k], k `mod` n == 0]  
+>	isPrime k = null [ n | n<- [2 .. (k-1)], k `mod` n == 0]  
+
+>	t4 = map isPrime [x+3 | x <- [1..20]]
 
 
 5.21
 
 >	matches :: Integer -> [Integer] -> [Integer]
->	matches k l@(x:xs) = [n | n<-l, n == x]
+>	matches k l@(x:xs) = [n | n<-l, n == k]
 
 >	elem' :: Integer -> [Integer] -> Bool
 >	elem' x l 
->		| x == head (matches x l)	= True
->		| otherwise					= False	
+>		| null $ matches x l		= False
+>		| otherwise					= True
+
+>	t5 = elem' 5 ([1..5] ++ [5..8])
+>	t6 = elem' 5 ([1..4] ++ [1..4])
 
 
 5.22
 
 >	onSeparateLines :: [String] -> String
 >	onSeparateLines [] = []
->	onSeparateLines l@(x:xs) = x ++ "\n" ++ onSeparateLines xs
+>	onSeparateLines (x:xs) = show x ++ "\n" ++ onSeparateLines xs 
+
+>	t7 = onSeparateLines ["Hello", "Bobby", "and", "Sally"]
 
 3 5.28
 
@@ -197,19 +209,26 @@ numbers tend to overshoot the limits.
 >		| name == m		= 1 + numBorrowed xs name
 >		| otherwise		= 0 + numBorrowed xs name
 
+>	t8 = books exampleBase "Alice"
+>	t9 = borrowers exampleBase "Tintin"
+>	t10 = borrowed exampleBase "Asterix"
+>	t11 = borrowed exampleBase "Hello"
+>	t12 = numBorrowed exampleBase "Alice"
 
 4
 
 >	exSet = [1,2,3,4,5,6,7,8,9,10]
 
-	groupByN :: Int -> [a] -> [[a]]
-
+>	groupByN :: [a] -> Int -> [[a]]
 >	groupByN [] n = []
 >	groupByN l n = sublist:groupByN l' n
 >		where
 >			sublist = split l n
 >			l' = drop n l
 
+>	t13 = groupByN exSet 3
+
+>	split :: [a] -> Int -> [a]
 >	split _ 0 = []
 >	split [] _ = []
 >	split (x:xs) n = x:split xs (n-1)

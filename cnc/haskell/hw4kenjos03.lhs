@@ -1,4 +1,5 @@
 >	import Data.Char
+>	import Test.QuickCheck
 
 H99P
 
@@ -61,6 +62,10 @@ CRFP
 
 >	elemNum' :: Integer -> [Integer] -> Integer
 >	elemNum' x xs = foldl (\acc y -> if x == y then 1 + acc else acc) 0 xs 
+
+>	t1 = elemNum 1 [1,1,1,1,1]
+>	t2 = elemNum' 2 [1, 2, 3, 2, 1, 3, 2, 1]
+>	prop_elemNum n xs = elemNum n xs == elemNum n xs
 	
 
 7.9
@@ -68,15 +73,24 @@ CRFP
 >	unique :: [Integer] -> [Integer]
 >	unique xs = [x | x <- xs, elemNum' x xs == 1 ]	
 
+>	t3 = unique [1,1,1,2,2,2,3,3,3,4,4,4]
+>	t4 = unique [1,2,2,2,3,4,4,4,5,5,5,6,7]
+
 
 10.9
 
-	iter :: Integer -> (Integer -> Integer) -> Integer -> Integer
-
->	iter 0 _ x = x
+>	iter :: Int -> (Integer -> Integer) -> Integer -> Integer
+>	iter 1 _ x = x
 >	iter n f x = f $ iter (n-1) f x
 
->	iter' n f x = unfoldr (\x -> Just (x, f x))    
+>	iter' :: Int -> (Integer -> Integer) -> Integer -> Integer
+>	iter' n f x = head $ reverse $ take n $ unfoldr (\x -> Just (x, f x)) x   
+
+>	l1 = [1..10]
+>	t5 = map (iter 5 (+5)) l1 
+>	t6 = map (iter' 5 (+5)) l1
+
+	prop_iter n f x = iter n f x == iter' n f x
 
 11.17
 

@@ -1,0 +1,11 @@
+
+
+
+(1/n) * summation(x[i] - mean(x))^2
+= (1/n) * (summation(x[i]^2 - 2*x[i]*mean(x) + mean(x)^2))
+= (1/n) * (summation(x[i]^2) - summation(2*x[i]*mean(x)) + summation(mean(x)^2))
+= (1/n) * (summation(x[i]^2) + summation(mean(x))^2 - 2*mean(x)*summation(x[i]))
+= (1/n) * (summation(x[i]^2) + mean(x)^2*n - 2*mean(x)^2*n)
+= (1/n) * (summation(x[i]^2) - mean(x)^2*n)
+
+

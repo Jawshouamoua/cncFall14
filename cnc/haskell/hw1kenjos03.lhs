@@ -1,5 +1,5 @@
-import Data.Char
-import Test.QuickCheck
+>	import Data.Char
+> 	import Test.QuickCheck
 
 
 >	size :: Integer
@@ -69,9 +69,7 @@ True && True
 3.17
 
 >	charToNum :: Char -> Int
->	charToNum a 
->		| (a >= '0') && (a <= '9')	= (fromEnum a) - 48
->		| otherwise					= 0
+>	charToNum a = (fromEnum a) - 48
 
 
 3.18
@@ -99,6 +97,10 @@ True && True
 >			where
 >				d = floor(averageThree a b c)
 
+	prop_averageThree :: Integer -> Integer -> Integer -> Float
+	prop_averageThree a b c = 
+		averageThree a b c == fromIntegral (a + b + c) / 3.0
+
 3.21
 
 
@@ -112,4 +114,21 @@ True && True
 >			where
 >				d = b^^2 - (4 * a * c)
 
+Testing
 
+>	t1 = threeDifferent 1 2 3
+>	t2 = threeDifferent 1 1 2
+
+>	t3 = map charToNum ['a'..'z']
+
+>	t4 = onThreeLines "yo" "yo" "ma"
+
+>	t5 = averageThree 1 2 3
+>	t6 = averageThree 5 6 7
+
+>	t7 = howManyAbvAv 5 6 7
+>	t8 = howManyAbvAv 1 1 1
+>	t9 = howManyAbvAv 1 6 7
+
+>	t10 = numberNDroots 1 1 1
+>	t11 = numberNDroots 2 0 0 
