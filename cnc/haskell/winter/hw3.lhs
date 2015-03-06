@@ -12,23 +12,30 @@
 > instance Functor (Pair b) where
 >	fmap = mapTuple'
 
+> t1 = fmap (+5) ("hello", 5)
+> t2 = fmap f1 ("hello", 5)
+> f1 = (\x -> head $ reverse $ take 5 $ iterate (+5) x) 
+
 instance Functor (a,b) where
 	fmap = mapTuple'
 
 > newtype Arrow r a =  Arrow (r -> a)
+> runArrow (Arrow f) x = f x
 
 > mapArrow :: (b -> a) -> Arrow c b -> Arrow c a
-> mapArrow f (Arrow g) = Arrow (\x -> f (g x)) 
+> mapArrow f (Arrow g) = Arrow $ \x -> f (g x) 
 
 > instance Functor (Arrow r) where
 >	fmap = mapArrow
 
+> t3 = fmap f1 (Arrow (+5)) 
+
+
 > newtype MyIO a = MyIO (IO a)
 
 > mapIO :: (a -> b) -> MyIO a -> MyIO b
-> mapIO f (MyIO m) = do
->	 x <- f m 	
->	 return MyIO x
+> mapIO f (MyIO m) = MyIO $ fmap f m
+
 
 
 > class Functor f => Pointed f where 

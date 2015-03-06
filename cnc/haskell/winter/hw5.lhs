@@ -63,6 +63,9 @@ Part II
 >		where
 >			z = op (newEval (eval' e1 env)) (newEval (eval' e2 env))
 
+
+eval (BinOp op e1
+
 > newEval (Just x) = x
 
  evalA' :: Expr -> Env -> Maybe Int

@@ -84,7 +84,7 @@ Show: fmap (g.h) (Node x l r) = fmap g (Node x l r) . fmap g (Node x l r)
 
 (i) Left side of equation
 fmap (g.h) (Node x l r)
-  = Node (fmap g . fmap h x) (fmap (g.h) l) (fmap (g.h) r)
+  = Node ((g.h) x) (fmap (g.h) l) (fmap (g.h) r)
   = Node (g (h x)) (fmap (g.h) l) (fmap (g.h) r) 
 
 (ii) Right side of equation
