@@ -1,0 +1,63 @@
+Q1. (This is assuming that we start with an empty queue)
+
+e(4) -> [4]
+1 cons
+e(5) -> [4,5]
+3 cons
+e(7) -> [4,5,7]
+6 cons
+deq -> [5,7],4
+7 cons
+deq -> [7],5
+8 cons
+e(8) -> [7,8]
+10 cons
+deq -> [8],7
+11 cons
+deq -> [],8
+12 cons
+e(9) -> [9]
+13 cons
+e(10) -> [9,10]
+15 cons
+deq -> [10],9
+16 cons
+e(11) -> [10,11]
+18 cons
+
+insert 1 E = T E 1 E
+insert 2 = (T E 1 (T E 2 E))
+insert 3 = (T E 1 (T E 2 (T E 3 E)))
+insert 4 = (T E 1 (T E 2 (T E 3 (T E 4 E))))
+insert 5 = (T E 1 (T E 2 (T E 3 (T E 4 (T E 5 E)))))
+insert 6 ...
+insert 10 = (T E 1 (T E 2 (... T E 10 E))...)
+
+Q2
+Maximum path is 10
+
+Q3. 
+
+ins 1 = T B E 1 E
+ins 2 = T B E 1 (T R E 2 E)
+ins 3 = T B E 1 (T R E 2 (T R E 3 E))
+	  = T B (T B E 1 E) 2 (T B E 3 E)
+ins 4 = T B (T B E 1 E) 2 (T B E 3 (T R E 4 E))
+ins 5 = T B (T B E 1 E) 2 (T B E 3 (T R E 4 (T R E 5 E)))
+      = T B (T B E 1 E) 2 (T R (T B E 3 E) 4 (T R E 5 E))
+	  = T B (T B (T B E 1 E) 2 (T B E 3 E)) 4 (T B E 5 E) 
+ins 6 = T B (T B (T B E 1 E) 2 (T B E 3 E)) 4 (T B E 5 (T R E 6 E))
+ins 7 = T B (T B (T B E 1 E) 2 (T B E 3 E)) 4 (T B E 5 (T R E 6 (T R E 7 E)))
+	  = T B (T B (T B E 1 E) 2 (T B E 3 E)) (T R (T B E 5 E) 6 (T R E 7 E))
+
+Q4.
+
+Qualified types are used to generalize a type without specifically declaring
+a type like Int, Bool, Char, etc. We need them to help group type classes
+without being too specific or too general.
+
+Set needs the Eq and Ord class. Eq is for equality, comparing two value to
+see if they're equal. Ord is for ordered types so that a list of numbers
+can be ordered and compared with (> or <). 
+
+

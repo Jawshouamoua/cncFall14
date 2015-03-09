@@ -60,8 +60,7 @@
 > t10 = myap x1 x2
 > t11 = myap' (return f1) x2
 
-> mysequence :: Monad m => [m a] -> m [a]
-> mysequence ms = foldr k (return []) ms
+> mysequence :: Monad m => [m a] -> m [a] > mysequence ms = foldr k (return []) ms
 >	where
 >		k m m' = do
 >			x <- m 

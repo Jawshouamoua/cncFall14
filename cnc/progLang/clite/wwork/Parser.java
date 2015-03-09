@@ -35,22 +35,46 @@ public class Parser {
         System.exit(1);
     }
 
-	public Program program() {
+	public Program program() 
+	{
 		//Program -> {Type Identifier FunctOrGlobal} MainFunction
+
+		Functions fs = new Functions() ;
 		while(isType()) 
 		{
-			Declarations
+			Type t = type() ;
+			if(t == TokenType.INT && token.type().equals(TokenType.Main))
+				fs.add(mainFunction()) ;	
+			else
+			{
+				Variable v = new Variable(match(TokenType.Identifier)) ;
+				fs.add(functOrGlob(t,v)) ;		
+			}		
+			
 		}
-		return new Program(gs, fs) ;
+		return new Program(fs) ;
 
 	}
 
-	private FunctionOrGlobal() {
+	private Declarations functOrGlob(Type t, Variable v) 
+	{
 
+		if(token.type().equals(TokenType.Comma) ||
+		token.type().equals(TokenType.Semicolon)) 
+		{
+			Declarations globals = globals(t,v) ;			
+			return(params) ;	
+		}
+		else if(token.type().equals(match(TokenType.LeftParen)))
+		{
+			
 
+		}
+		
 	}
 
-	private Parameters() {
+	private Declarations parameters() 
+	{
 		
 
 
@@ -64,13 +88,13 @@ public class Parser {
 
 	}
 
-	private Global() {
+	private Declarations globals() {
 		
 
 
 	}
   
-    private MainFunction() {
+    private MainFunction mainFunction() {
         // MainFunction --> void main ( ) '{' Declarations Statements '}'
         TokenType[ ] header = {TokenType.LeftParen, TokenType.RightParen};
         for (int i=0; i<header.length; i++)   // bypass "int main ( )"
