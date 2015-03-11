@@ -34,4 +34,21 @@ H(A3) = 1 - (2/4)B(1/2) + (2/4)B(1/2) = 0
 
 A2 has largest information gain, so split at A2 and the tree is finished.
 
+18.7
 
+x1--------0--x2----0---- [000,001]
+		\		 \_1____ [010,011]
+		 \
+		  x3-----0------ [100,110]
+			 \____1_____ [001,111]
+
+18.11
+
+With LOOCV, only 1/n samples (n=number of instance) is used as the
+training set. That means the data is trained on all the data except for
+one instance which is used to test the hypothesis. Since the majority 
+function only returns the result that is greater than 50% and the data
+is trained on 50 positive and negative examples, when the classifier is
+used to test, there are 49 instances that have the same result as the test
+and 50 instances of the negative example, therefore, the classifier always
+fails. 

@@ -60,7 +60,8 @@
 > t10 = myap x1 x2
 > t11 = myap' (return f1) x2
 
-> mysequence :: Monad m => [m a] -> m [a] > mysequence ms = foldr k (return []) ms
+> mysequence :: Monad m => [m a] -> m [a] 
+> mysequence ms = foldr k (return []) ms
 >	where
 >		k m m' = do
 >			x <- m 
@@ -126,3 +127,27 @@
 
 > e1 = \x -> Right (x * 2 + 5)
 > e2 = join $ fmap e1 (Right 1)
+
+
+> instance Functor (Reader r) where
+>	fmap f (Arrow g) = Arrow $ \x -> f (g x)
+
+> instance Applicative (Reader r) where
+>	pure g = Arrow $ \_ -> g
+>	Arrow f <*> Arrow g = Arrow $ \x -> let 
+>		x' = g x
+>		f' = f x
+>		in f' x'	
+
+> instance JoinMonad (Reader r) where
+>	join (Arrow g) = Arrow $ \x -> let
+>		Arrow f = g x
+>		in f x
+
+> a1 = Arrow (\x -> (+2) x)  
+
+ a2 = join $ fmap a1 (Arrow (+2) )
+
+> sequence :: JoinMonad m => [m a] -> m [a] 
+> sequence ms = foldr k [] ms where
+>	k m ms' = 
