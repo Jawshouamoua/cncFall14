@@ -163,19 +163,61 @@ ViewL and ViewR are the extracts from left and right.
 >	tailL :: FingerTree a -> FingerTree a
 >	tailL x = case viewL x of ConsL _ x' -> x'
 
-
 1. Complete the mirror image of view.
+
+>	data ViewR s a = NilR | ConsR a (s a)
+>		deriving Show
+
+>	viewR :: FingerTree a -> ViewR FingerTree a
+>	viewR Empty = NilR
+>	viewR (Single x) = ConsR x Empty
+>	viewR (Deep pr m sf) = ConsR (head sf) (deepR (tail sf) m pr)
+
+>	deepR :: [a] -> FingerTree (Node a) -> Digit a -> FingerTree a
+>	deepR [] m pr = case viewR m of
+>		NilR -> toTree pr
+>		ConsR a m' -> Deep (toList a) m' pr
+>	deepR sf m pr = Deep pr m sf
+
+>	isEmptyR :: FingerTree a -> Bool
+>	isEmptyR x = case viewR x of
+>		NilR -> True
+>		ConsR _ _ -> False
+
+>	headR :: FingerTree a -> a
+>	headR x = case viewR x of ConsR a _ -> a
+
+>	tailR :: FingerTree a -> FingerTree a
+>	tailR x = case viewR x of ConsR _ x' -> x'
 
 2. Create finger trees from lists:
          [1], [1,2,3,4]
 
+>	t1 = toTree [1]
+>	t2 = toTree [1,2,3,4]
+
+*Main> toTree [1]
+Single 1
+*Main> toTree [1,2,3,4]
+Deep [1,2,3] Empty [4]
+
 3. Treating your finger tree as a deque, use insL and insR to add
 to the front and the rear of the deque.
+
+>	t3 = insl t2 5 
+>	t4 = insl t3 3
+>	t5 = insr 2 t4 
+>	t6 = insr 7 t5 
 
 4. Use the viewL and viewR to "dequeue" elements from the left and right
 respectively.
 
+>	t7 = viewL t6
+>	t8 (ConsL _ t) = viewR t
+
 5. Make a fingerTree of nodes using toTree and the Node constructors.
+
+>	t9 = toTree $ reducer (:) (Node3 1 2 3) []
 
 6. In the paper, digits are represented as lists. Instead, use the
 data type for Exercise 1: 

@@ -1,0 +1,9 @@
+24.4
+
+The specularities of the handle are reflectance, the carrot in front of the pot is depth,
+the "light" line down the middle of the kettle is surface orientation, the handle of the pot is illumination,
+the vegetables in the pot are depth, etc.
+
+24.5
+
+d = 2 * 
