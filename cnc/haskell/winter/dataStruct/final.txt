@@ -1,0 +1,172 @@
+
+Dequeues
+
+The representation type for the dequeue is a quadruple of lists:
+Quad L R L' R' where L is the front of the dequeue, L' is the rest of 
+the remaining first half of the dequeue, R is the very end of the dequeue
+and R' is the remainder of the second half of the dequeue. 
+
+insertL 1, insertL 2, insertL3, insertR4, insertR 5, removeL, removeR
+
+(Assuming an empty dequeue)
+insertL 1 = Quad [1] [] [] []
+insertL 2 = Quad [2] [1] [2] [1]
+insertL 3 = Quad [3,2] [1] [2] [1]
+insertR 4 = Quad [3,2] [4,1] [2] [1]
+insertR 5 = Quad [3,2] [5,4,1] [2] [1]
+removeL   = (3, Quad [2] [5,4,1] [] [])
+removeR   = (5, Quad [2] [4,1] [] [])
+
+makedq checks the length of the left and right ends of the dequeue and if 
+|L| > c|R| or |R| > c|L| then we call the rot1 function which recursively
+calls itself until the remaining list contains less elements than the 
+constraint above. It then calls rot2 which works on the second half of the
+list. The rotation occurs to keep the sizes of each list relatively the 
+same size. 
+
+Dequeues achieve O(1) time by keeping 2 lists, one for the front half of 
+the actual list and the other for the back half of the actual list. This
+way, we can push elements to the front or back and also pop elements from
+the front or back in constant time, since the second list is actually in
+reverse order. So when we cons to the end of the list, it's actually the
+head of the second list. If we rotate, we are sure to reverse the elements
+coming from the first list to the second list to maintain the correct
+ordering. 
+
+
+Finger trees
+
+The representation of a finger tree is either:
+Empty -- where there is nothing in the tree.
+Single a -- where there is a single value in the tree.
+Deep ((Digit a) (FingerTree (Node a)) (Digit a) --
+	where there is a value(s) in the front, followed by finger tree,
+	followed by value(s) at the end of the tree. This is similar to a
+	dequeue because items in the tree can be modified from the front
+	or the back of the tree in constant time.
+
+Examples:
+
+insert left 2 and then 1
+
+insl 2 Empty = 					Single 2
+insl 1 (Single 2) = 			Deep [1] Empty [2]
+insl 3 (Deep [1] Empty [2]) = 	Deep [3,1] Empty [2]
+insl 4 (Deep [3,1] Empty [2]) = Deep [4,3,1] Empty [2]
+insl 5 (Deep [4,3,1] Empty [2]) = Deep [5,4,3,1] Empty [2]
+insl 6 (Deep [5,4,3,1] Empty [2]) = Deep [6,5] (insl (Node3 4 3 1) Empty) [2]
+								  = Deep [6,5] (Single (Node3 4 3 1)) [2]
+
+
+insert on the right 10 and 11
+
+insr Empty 10 = 				Single 10
+insr (Single 10) 11 =			Deep [10] Empty [11]
+insr (Deep [10] Empty [11]) 9 = Deep [10] Empty [11,9]
+insr (Deep [10] Empty [11,9]) 8 = Deep [10] Empty [11,9,8]
+insr (Deep [10] Empty [11,9,8]) 7 = Deep [10] Empty [11,9,8,7]
+insr (Deep [10] Empty [11,9,8,7]) 6 = Deep [10] (insr Empty (Node3 11 9 8)) [7,6]
+									= Deep [10] (Single (Node3 11 9 8)) [7,6]
+
+remove element from the right
+
+viewR Empty = NilR
+viewR (Deep [6,5] (Single (Node3 4 3 1)) [2]) =
+	ConsR (head [2]) (deepR [6,5] (Single (Node3 4 3 1)) (tail [2])) =
+	ConsR 2 (Deep [6,5] Empty (toList (Node3 4 3 1))) =
+	ConsR 2 (Deep [6,5] Empty [4,3,1])
+
+
+
+create a tree from the list [1..10]
+
+toTree [1..10] = liftinsl [1..10] Empty
+	reducer insl [1..10] Empty 
+	insl 1 Empty = Single 1
+	insl 2 (Single 1) = Deep [2] Empty [1]
+	insl 3 (prev ans) = Deep [3,2] Empty [1]
+	insl 4 (prev ans) = Deep [4,3,2] Empty [1]
+	insl 5 (prev ans) = Deep [5,4,3,2] Empty [1]
+	insl 6 (prev ans) = Deep [6,5] (insl (Node 4 3 2) Empty) [1]
+					  = Deep [6,5] (Single (Node 4 3 2)) [1]
+	insl 7 (prev ans) = Deep [7,6,5] (Single (Node 4 3 2)) [1]
+	insl 8 (prev ans) = Deep [8,7,6,5] (Single (Node 4 3 2)) [1]
+	insl 9 (prev ans) = Deep [9,8] (insl (Node3 7 6 5) (Single (Node 4 3 2))) [1]
+					  = Deep [9,8] (Deep (Node3 7 6 5) Empty (Node3 4 3 2)) [1]
+	insl 10 (pre ans) = Deep [10,9,8] (Deep (Node3 7 6 5) Empty (Node3 4 3 2)) [1]
+
+(I might've done this backwards)
+
+The Big O of getting a value from the front or rear is O(1) or constant time because
+the front and end of the tree are always available to be accessed when called for since
+there is a list that can be accessed in the front and back of the finger tree representation:
+Deep [a] (FingerTree (Node a)) [a] 
+	where the head of the [a]s can be accessed immediately without traversing the whole 
+	structure.
+
+The append function takes two trees and concatenates them together. This is done with the
+app3 function which pattern matches against how full the trees xs ys is. For example,
+if append xs ys is the function, and xs is empty and ys is not, it will use liftinsl on
+and empty list and ys. The liftinsl function will run "reducel insl [] ys" which will 
+iteratively used insl from the one finger tree to a new finger tree. If the append function
+is supplied with two finger trees, it will breakdown one tree depending on which tree is
+larger, then supply those values with insr or insl to the other tree. 
+
+Finger trees achieve their efficiency from having constant time access via a list for the
+front and back of the structure, and all the remaining values placed in a nested finger
+tree within the first. As more values populate the front or back lists (up to 4), then
+a new finger tree is created in the middle of both the lists. For example, if there are
+already 4 values in the front of the tree and we try to add a value to the front, then
+it will take the tail of that list and turn it into a Node3 and place it in the inner 
+finger tree. Then the new value is appended to the remaining value in the front of the 
+list. The same process is used for loading values through the back. So while the operations
+of moving the values inside the nested tree will not be constant time, this overhead cost
+will ensure that pulling a value from the front or back of the tree will be constant since
+removing the head of a list is in constant time and the front and back of the tree are 
+represented as a list.
+
+
+Red-Black/AVL trees
+
+AVL Tree
+insert Empty 1 = (Br Empty 1 Empty 1) 
+insert (prev ans) 2 = (Br Empty 1 (Br Empty 2 Empty 1) 2)
+insert (prev ans) 3 = (Br Empty 1 (Br Empty 2 (Br Empty 3 Empty 1) 2) 3)
+					= (Br (Br Empty 1 Empty 1) 2 (Br Empty 3 Empty 1) 2)
+insert (prev ans) 4 = (Br (Br Empty 1 Empty 1) 2 (Br Empty 3 (Br Empty 4 Empty 1) 2) 3)
+					= (Br (Br Empty 1 (Br Empty 2 Empty 1) 2) 3 (Br Empty 4 Empty 1) 3)
+insert (prev ans) 5 = 
+
+The rotation occurs when for any given node, starting at the leaves, the height of the left
+and right subtree only differ by +1,0,-1. This is the height invariant of the tree. When it 
+is violated, the rotations occur. Because it the rotations begin from the bottom up, then
+one rotation can create a height invariant violation for the next nodes up, therefore 
+"bubbling" it's way all the way to the top. When the height invarient is satisfied for all
+nodes starting from the bottom to the top, then we know the tree is balanced.
+
+Red/Black tree
+
+insert 1 RB_E 		= RBT B RB_E 1 RB_E
+insert 2 (prev ans) = RBT B RB_E 1 (RBT R RB_E 2 RB_E)
+insert 3 (prev ans) = RBT B RB_E 1 (RBT R RB_E 2 (RBT R RB_E 3 RB_E))
+					= RBT B (RBT R RB_E 1 RB_E) 2 (RBT R RB_E 3 RB_E)
+insert 4 (prev ans) = RBT B (RBT R RB_E 1 RB_E) 2 (RBT R RB_E 3 (RBT R RB_E 4 RB_E))
+insert 5 (prev ans) = RBT B (RBT B RB_E 1 RB_E) 2 (RBT B RB_E 3 (RBT R RB_E 4 (RBT R RB_E 5 RB_E)))
+					= RBT B (RBT B RB_E 1 RB_E) 2 (RBT R (RBT B RB_E 3 RB_E) 4 (RBT B RB_E 5 RB_E))
+insert 6 (prev ans) = RBT B (RBT B RB_E 1 RB_E) 2 (RBT R (RBT B RB_E 3 RB_E) 4 (RBT B RB_E 5 (RBT R RB_E 6 RB_E))
+insert 7 (prev ans) = RBT B (RBT B RB_E 1 RB_E) 2 (RBT R (RBT B RB_E 3 RB_E) 4 (RBT B RB_E 5 (RBT R RB_E 6 (RBT R RB_E 7 RB_E)))
+					= RBT B (RBT B RB_E 1 RB_E) 2 (RBT R (RBT B RB_E 3 RB_E) 4 (RBT R (RBT B RB_E 5 RB_E) 6 (RBT B RB_E 7 RB_E))
+					= RBT B (RBT B (RBT B RB_E 1 RB_E) 2 (RBT B RB_E 3 RB_E)) 4 (RBT B (RBT B RB_E 5 RB_E) 6 (RBT B RB_E 7 RB_E))
+insert 8 (prev ans) = RBT B (RBT B (RBT B RB_E 1 RB_E) 2 (RBT B RB_E 3 RB_E)) 4 (RBT B (RBT B RB_E 5 RB_E) 6 (RBT B RB_E 7 (RBT R RB_E 8 RB_E)))
+insert 9 (prev ans) = RBT B (RBT B (RBT B RB_E 1 RB_E) 2 (RBT B RB_E 3 RB_E)) 4 (RBT B (RBT B RB_E 5 RB_E) 6 (RBT R (RBT B RB_E 7 RB_E) 8 (RBT R RB_E 9 RB_E)))
+insert 10 (prev ans) = RBT B (RBT B (RBT B RB_E 1 RB_E) 2 (RBT B RB_E 3 RB_E)) 4 (RBT B (RBT B RB_E 5 RB_E) 6 (RBT R (RBT B RB_E 7 RB_E) 8(RBT B RB_E 9 (RBT R RB_E 10 RB_E))))
+					
+The rotation occurs when there is a sequence of a black node, followed by a red node and 
+another red node. In other words, when a red parent has a red child, then a rotation occurs. 
+There are cases when a rotation occurs and still leaves a red node with a red child. This is
+the "bubbling" that occurs from the recursive call to "ins" because a rotation will leave a 
+red node where the black node followed by two red nodes used to be. 
+
+Both the heights of red/black trees and AVL trees are of the family log(n), however their
+invariants imply that they are not the same constant times log(n).
+
