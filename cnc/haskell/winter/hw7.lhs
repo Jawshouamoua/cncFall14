@@ -1,4 +1,4 @@
-
+> import Control.Monad.Instances
 
 > data Expr = Var String | Val Int | BinOp (Int -> Int -> Int) Expr Expr
 
@@ -24,5 +24,12 @@
 >	x2 <- eval e2
 >	return (op x1 x2) 
 
-
+> eval' :: Expr -> Env -> Maybe Int
+> eval' (Val x) = return (Just x)
+> eval' (Var x) = lookup x
+> eval' (BinOp op e1 e2) = do
+>	x1 <- e1
+>	x2 <- e2
+>	val <- Just op <*> e1 <*> e2
+>	return val
 
