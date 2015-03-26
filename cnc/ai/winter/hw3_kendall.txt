@@ -1,0 +1,25 @@
+weights for OR
+
+w0 = -1
+w1 = 1
+w2 = 1
+
+NOT
+
+w0 = 0
+w1 = -1
+
+Majority
+w0 = -n/2 where n is number of inputs
+w1 = 1
+w2 = 1
+
+XOR
+w1-3 = 1
+w1-4 = 1
+w2-4 = 1
+w2-5 = 1
+w3-6 = 1
+w4-6 = -2
+w5-6 = 1
+

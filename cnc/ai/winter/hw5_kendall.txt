@@ -6,4 +6,41 @@ the vegetables in the pot are depth, etc.
 
 24.5
 
-d = 2 * 
+a)
+d = 2 * (512 px/10 cm) * 16 cm * (0.5 m/Z)
+
+if Z is 16 m, then the total disparity is 51.2 pixels or 51 pixels.
+
+b)
+Z = 2 * (512 px/10 cm) * 16 cm * (0.5 m/d)
+if d = 51, then Z = 16.06 meters.
+if d = 52, then Z = 15.75 meters.
+
+Difference is .31 meters or 31 cm.
+
+c)
+A disparity of 1 px would be a 51.2 cm, so if we swapped d and Z in the
+original formula, we would get a disparity of 1 px.
+
+
+25.6
+
+a)
+False
+
+b)
+True
+
+c)
+False
+
+d)
+False
+
+25.7
+
+The distance can be measured for points A, B, and C, because both
+cameras can see those points. However, for the points D and E, only
+one camera can see those each, so they cameras will not be able to
+determine the distances of those points.
+
